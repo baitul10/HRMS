@@ -1,0 +1,76 @@
+﻿@model TerrainHRM.Models.HrApplicant
+
+@{
+    ViewData["Title"] = "Applicant Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-6 text-left">
+        <h4>Applicant Details</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-controller="Applicant" asp-action="Index" class="btn btn-primary">Back to Applicant List</a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-2">
+
+    </div>
+    <div class="col-8">
+        <div class="form-group row">
+
+            <div class="col-2 text-left">
+                <label class="text-dark">Name</label>
+            </div>
+            <div class="col-4">
+                <input class="text-center font-weight-bold" readonly type="text" name="Name" value="@Model.Name" />
+            </div>
+            <div class="col-2 text-left">
+                <label class="text-dark">Gender</label>
+            </div>
+            <div class="col-4 text-center font-weight-bold">
+                <input class="text-center font-weight-bold" readonly value="@Model.Gender" type="text" name="Gender" />
+            </div>
+
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2 text-left">
+                <label class="text-dark">Age</label>
+            </div>
+            <div class="col-4 text-center font-weight-bold">
+                <input class="text-center font-weight-bold" readonly type="text" name="Age" value="@Model.Age" />
+            </div>
+            <div class="col-2 text-left">
+                <label class="text-dark">Total Experience</label>
+            </div>
+            <div class="col-4 text-center font-weight-bold">
+                <input class="text-center font-weight-bold" readonly value="@Model.TotalExperiences" type="text" name="TotalExperiences" />
+            </div>
+        </div>
+    </div>
+    <div class="col-2">
+
+    </div>
+</div>
+
+<table class="table table-bordered col-8 table-sm mx-auto">
+    <thead class="thead-dark">
+        <tr>
+            <th class="text-center">Company Name</th>
+            <th class="text-center">Designation</th>
+            <th class="text-center">Years Worked</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exp in Model.HrExperiences)
+        {
+            <tr>
+                <td class="text-center">@exp.CompanyName</td>
+                <td class="text-center">@exp.Designation</td>
+                <td class="text-center">@exp.YearsWorked</td>
+            </tr>
+        }
+    </tbody>
+</table>

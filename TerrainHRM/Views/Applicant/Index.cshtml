@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TerrainHRM.Models.HrApplicant>
+
+@{ 
+    ViewData["Title"] = "Applicant List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-6 text-left">
+        <h4>Applicant List</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a class="btn btn-primary" asp-controller="Applicant" asp-action="CreateApplicant">Create Applicant</a>
+    </div>
+</div>
+<hr />
+@if (Model.Count() == 0)
+{
+    <p>No Data Found.</p>
+}
+else
+{
+    <table class="table table-bordered col-8 table-sm mx-auto">
+        <thead class="thead-dark">
+            <tr>
+                <th  class="text-center">#</th>
+                <th class="text-center">Applicant Name</th>
+                <th class="text-center">Gender</th>
+                <th class="text-center">Age</th>
+                <th class="text-center">Total Experiences</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var applicant in Model)
+            {
+                <tr>                    
+                    <td class="text-center"><a asp-controller="Applicant" asp-action="ApplicantDetails" asp-route-id="@applicant.ApplicantId"><i class="fas fa-edit"></i></a></td>
+                    <td class="text-center">@applicant.Name</td>
+                    <td class="text-center">@applicant.Gender</td>
+                    <td class="text-center">@applicant.Age</td>
+                    <td class="text-center">@applicant.TotalExperiences</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
