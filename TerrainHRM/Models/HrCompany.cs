@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TerrainHRM.Models
 {
@@ -15,13 +16,7 @@ namespace TerrainHRM.Models
         public string FileMymeType { get; set; }
         public string FileCharacter { get; set; }
         public byte[] CimLogoApps { get; set; }
+
+        public virtual List<CompanyDtl> CompanyDtlList { get; set; } = new List<CompanyDtl>();
     }
 }
-
-
-//SELECT CIM_ID, CIM_NAME, CIM_DETAILS,
-//   CIM_LOGO_APPS, CIM_MOTO, CIM_SHORT_NAME,
-//   CIM_MULTI_COMPANY_FLAG, CIM_MULTI_ADDRESS_FLAG, CIM_LOGO,
-//   CIM_FILE_NAME, CIM_UPDATE_DATE, CIM_FILE_MIMETYPE,
-//   CIM_FILE_CHARACTER
-//FROM DU.COMPANY_INFO_MST

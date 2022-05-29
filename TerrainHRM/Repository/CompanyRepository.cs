@@ -35,10 +35,40 @@ namespace TerrainHRM.Repository
             };
 
             cmd.Connection.Open();
-            var restult = cmd.ExecuteNonQuery();
+            var result = cmd.ExecuteNonQuery();
+
+            if (result>0)
+            {
+                StringBuilder queryString2 = new StringBuilder();
+                queryString2.Append("Insert into COMPANY_INFO_DTL (CID_ID, CID_NAME, CID_DETAILS, CID_MOTO, CID_CIM_ID, CID_SHORT_NAME)");
+                var companyDtlCount = company.CompanyDtlList.Count;
+
+                for (int i = 0; i < companyDtlCount; i++)
+                {
+                    queryString2.Append("select " + company.CompanyDtlList[i].CimId + ", '" + company.CompanyDtlList[i].CidName + "', '" + company.CompanyDtlList[i].CidDetails + "', ");
+                    queryString2.Append("'" + company.CompanyDtlList[i].CidMoto + "', " + company.CimId + ", '" + company.CompanyDtlList[i].CidShortName + "' from dual");
+                    if (i + 1 < companyDtlCount)
+                    {
+                        queryString2.Append(" union all ");
+                    }
+                }
+
+                OracleCommand cmdDtl = new OracleCommand()
+                {
+                    CommandText = queryString2.ToString(),
+                    CommandType = CommandType.Text,
+                    Connection = conn
+                };
+
+                cmdDtl.Connection.Open();
+                cmdDtl.ExecuteNonQuery();
+                cmdDtl.Connection.Close();
+                cmdDtl.Dispose();
+            }
+           
             cmd.Connection.Close();
             cmd.Dispose();
-            return restult;
+            return result;
         }
 
         public HrCompany GetCompany()
@@ -210,12 +240,44 @@ namespace TerrainHRM.Repository
             };
 
             cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
+            var result = cmd.ExecuteNonQuery();
+
+
+            if (result > 0)
+            {
+                StringBuilder queryString2 = new StringBuilder();
+                queryString2.Append("Insert into COMPANY_INFO_DTL (CID_ID, CID_NAME, CID_DETAILS, CID_MOTO, CID_CIM_ID, CID_SHORT_NAME)");
+                var companyDtlCount = company.CompanyDtlList.Count;
+
+                for (int i = 0; i < companyDtlCount; i++)
+                {
+                    queryString2.Append("select " + company.CompanyDtlList[i].CimId + ", '" + company.CompanyDtlList[i].CidName + "', '" + company.CompanyDtlList[i].CidDetails + "', ");
+                    queryString2.Append("'" + company.CompanyDtlList[i].CidMoto + "', " + company.CimId + ", '" + company.CompanyDtlList[i].CidShortName + "' from dual");
+                    if (i + 1 < companyDtlCount)
+                    {
+                        queryString2.Append(" union all ");
+                    }
+                }
+
+                OracleCommand cmdDtl = new OracleCommand()
+                {
+                    CommandText = queryString2.ToString(),
+                    CommandType = CommandType.Text,
+                    Connection = conn
+                };
+
+                cmdDtl.Connection.Open();
+                cmdDtl.ExecuteNonQuery();
+                cmdDtl.Connection.Close();
+                cmdDtl.Dispose();
+            }
+
+
             cmd.Connection.Close();
             cmd.Dispose();
 
 
-            return 1;
+            return result;
         }
 
 

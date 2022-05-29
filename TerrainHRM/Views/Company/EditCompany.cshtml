@@ -48,6 +48,28 @@
         </div>
     </div>
 
+    <table>
+        <thead class="text-dark">
+            <tr>
+                <th>Name</th>
+                <th>Short Name</th>
+                <th>Details</th>
+                <th>Moto</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.CompanyDtlList.Count; i++)
+            {
+                <tr>
+                    <td>@Html.EditorFor(x=>x.CompanyDtlList[i].CidName, new { htmlAttribute = new { @class="form-control"} })</td>
+                    <td>@Html.EditorFor(x=>x.CompanyDtlList[i].CidShortName, new { htmlAttribute = new { @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(x=>x.CompanyDtlList[i].CidDetails, new { htmlAttribute = new { @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(x=>x.CompanyDtlList[i].CidMoto, new { htmlAttribute = new { @class = "form-control" } })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
     <div class="form-group row">
         <input type="submit" class="btn btn-primary rounded-0" value="Submit" />
         <a class="btn btn-danger" asp-action="Index" asp-controller="Company" style="margin-left:10px;">Back</a>

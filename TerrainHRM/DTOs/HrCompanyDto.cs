@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
+using TerrainHRM.Models;
 
 namespace TerrainHRM.DTOs
 {
@@ -18,5 +20,7 @@ namespace TerrainHRM.DTOs
         public byte[] CimLogoApps { get; set; }
 
         public IFormFile Logo { get; set; }
+
+        public virtual List<CompanyDtl> CompanyDtlList { get; set; } = new List<CompanyDtl>();
     }
 }

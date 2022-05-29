@@ -44,6 +44,7 @@ namespace TerrainHRM.Controllers
         [HttpGet]
         public IActionResult CreateCompany()
         {
+            var company = new HrCompany();
             return View();
         }
 
@@ -103,6 +104,11 @@ namespace TerrainHRM.Controllers
                 FileName = company.FileName,
                 FileMymeType = company.FileMymeType
             };
+
+            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 1 });
+            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 2 });
+            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 3 });
+
             return View(hrCompany);
         }
 
