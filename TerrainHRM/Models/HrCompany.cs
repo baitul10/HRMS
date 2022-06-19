@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace TerrainHRM.Models
 {
     public class HrCompany
     {
         public int CimId { get; set; }
+        [Required]
+        [DisplayName("Company Name")]
         public string CimName { get; set; }
         public string CimDetails { get; set; }
         public string CimMoto { get; set; }

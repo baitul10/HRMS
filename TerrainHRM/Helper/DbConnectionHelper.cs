@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,29 @@ namespace TerrainHRM.Helper
             cmd.Connection.Close();
 
             return result;
+        }
+
+
+        public static int GetGeneratedPK(string pTableName, string pPkColumnName)
+        {
+            int pkId = 0;
+            OracleConnection con = GetOrclConnection();
+            //var context = new UGIDOCDbContext();
+            OracleCommand cmd = new OracleCommand()
+            {
+                CommandText = "SELECT FG_GEN_PK_ID('" + pTableName + "','" + pPkColumnName + "') FROM DUAL",
+                CommandType = CommandType.Text,
+                Connection = con
+            };
+
+            con.Open();
+            OracleDataReader reader = cmd.ExecuteReader();
+            if (reader.Read())
+                pkId = reader.GetInt32(0);
+
+            con.Close();
+
+            return pkId;
         }
     }
 }

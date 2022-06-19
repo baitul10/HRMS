@@ -19,20 +19,20 @@ namespace TerrainHRM.Controllers
         }
         public IActionResult Index()
         {
-            List<HrApplicant> applicants = _applicant.GetAllApplicants();
+            List<HrApplicantOld> applicants = _applicant.GetAllApplicants();
             return View(applicants);
         }
 
         public IActionResult ApplicantDetails(int id)
         {
-            HrApplicant applicant = _applicant.GetApplicant(id);
+            HrApplicantOld applicant = _applicant.GetApplicant(id);
             return View(applicant);            
         }
 
         [HttpGet]
         public IActionResult CreateApplicant()
         {
-            HrApplicant applicant = new HrApplicant();
+            HrApplicantOld applicant = new HrApplicantOld();
             applicant.HrExperiences.Add(new HrExperiences { ExperienceId = 1 });
             applicant.HrExperiences.Add(new HrExperiences { ExperienceId = 2 });
             applicant.HrExperiences.Add(new HrExperiences { ExperienceId = 3 });
@@ -40,7 +40,7 @@ namespace TerrainHRM.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateApplicant(HrApplicant applicant)
+        public IActionResult CreateApplicant(HrApplicantOld applicant)
         {
             applicant.ApplicantId = DbConnectionHelper.GetMaxPKValue("HR_APPLICANT", "APPLICANT_ID")+1;
             var expId = DbConnectionHelper.GetMaxPKValue("HR_EXPERIENCE", "EXPERIENCE_ID") + 1;

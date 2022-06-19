@@ -5,9 +5,15 @@ namespace TerrainHRM.Interfaces
 {
     public interface ICompanyRepository
     {
-        int CreateCompany(HrCompany company);
-        HrCompany GetCompany();
-        List<Employee> GetEmployees();
-        int EditCompanyInfo(HrCompany company);
+        List<CompanyInfoMst> GetCompanyList();
+        CompanyInfoMst GetCompanyById(int id);
+        int CreateNewCompany(CompanyInfoMst company, List<CompanyInfoDtl> companies);
+        int EditCompany(CompanyInfoMst company);
+        int DeleteCompany(int id);
+
+        int CreateCompanyOffice(List<CompanyOfficeAddress> companyOffices);
+        int UpdateCompanyOffice(List<CompanyOfficeAddress> companyOffices);
+        int DeleteCompanyOffice(int id);
+
     }
 }

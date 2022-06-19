@@ -15,10 +15,10 @@ namespace TerrainHRM.Controllers
 {
     public class CompanyController : Controller
     {
-        private readonly ICompanyRepository _company;
+        private readonly ICompanyRepositoryOld _company;
         private readonly IWebHostEnvironment _env;
         private readonly string _rootDir;
-        public CompanyController(ICompanyRepository company, IWebHostEnvironment env)
+        public CompanyController(ICompanyRepositoryOld company, IWebHostEnvironment env)
         {
             _company = company;
             _env = env;
@@ -60,7 +60,7 @@ namespace TerrainHRM.Controllers
             }
             var rootPath = Path.Combine(_rootDir, fileName);
 
-            var company = new HrCompany
+            var company = new CompanyMst
             {
                 CimId = id,
                 CimName = compnayName,
@@ -70,7 +70,7 @@ namespace TerrainHRM.Controllers
                 MultiCompanyFlag = multiCompanyFlag,
                 FileName = fileName,
                 FileUpdateDate = DateTime.Now,
-                FileMymeType = fileExt,
+                FileMimeType = fileExt,
                 FileCharacter = null
             };
 
@@ -91,91 +91,101 @@ namespace TerrainHRM.Controllers
         }
 
 
-        public IActionResult EditCompany()
-        {
-            var company = _company.GetCompany();
-            var hrCompany = new HrCompanyDto()
-            {
-                CimId = company.CimId,
-                CimName = company.CimName,
-                CimDetails = company.CimDetails,
-                CimShortName = company.CimShortName,
-                CimMoto = company.CimMoto,
-                FileName = company.FileName,
-                FileMymeType = company.FileMymeType
-            };
+        //public IActionResult EditCompany()
+        //{
+        //    var company = _company.GetCompany();
+        //    var hrCompany = new CompanyMst()
+        //    {
+        //        CimId = company.CimId,
+        //        CimName = company.CimName,
+        //        CimDetails = company.CimDetails,
+        //        CimShortName = company.CimShortName,
+        //        CimMoto = company.CimMoto,
+        //        FileName = company.FileName,
+        //        FileMimeType = company.FileMimeType
+        //    };
 
-            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 1 });
-            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 2 });
-            hrCompany.CompanyDtlList.Add(new CompanyDtl { CidId = 3 });
+        //    hrCompany.CompanyDtlList.Add(new CompanyDtl() { CidId = 1 });
 
-            return View(hrCompany);
-        }
+        //    return View(hrCompany);
+        //}
 
-        [HttpPost]
-        public IActionResult EditCompany(HrCompanyDto company)
-        {
-            if (company!=null)
-            {
-                var fileName = Path.GetFileName(company.Logo.FileName);
-                var fileExt = Path.GetExtension(company.Logo.FileName);
-                if (company.Logo.Length > 0)
-                {
-                    var filePath = Path.Combine(_rootDir, company.FileName);
-                    FileInfo fileInfo = new FileInfo(filePath);
-                    if (fileInfo.Exists)
-                    {
-                        fileInfo.Delete();
-                    }
-
-                    //var rootDir = Path.Combine(_env.WebRootPath, "images");
-                    if (!Directory.Exists(_rootDir))
-                    {
-                        Directory.CreateDirectory(_rootDir);
-                    }
-                    var rootPath = Path.Combine(_rootDir, fileName);
+        //[HttpPost]
+        //public IActionResult EditCompany(CompanyMst company)
+        //{
+        //    if (company!=null)
+        //    {
 
 
-                    if (company.Logo.Length > 0)
-                    {
-                        using (var stream = new FileStream(rootPath, FileMode.Create))//File.Create(filePath, fileSize))
-                        {
-                            company.Logo.CopyTo(stream);
-                        }
-                    }
+        //        HrCompany hrCompany = new HrCompany()
+        //        {
+        //            CimId = company.CimId,
+        //            CimName = company.CimName,
+        //            CimDetails = company.CimDetails,
+        //            CimShortName = company.CimShortName,
+        //            CimMoto = company.CimMoto,
+        //            // FileName = fileName,
+        //            // FileMymeType = fileExt,
+        //            FileUpdateDate = DateTime.Now
+        //        };
 
-                }
+        //        if (company.Logo!=null)
+        //        {
 
-                company.FileName = fileName;
-                company.FileMymeType = fileExt;
+        //            var fileName = Path.GetFileName(company.Logo.FileName);
+        //            var fileExt = Path.GetExtension(company.Logo.FileName);
+        //            if (company.Logo.Length > 0)
+        //            {
+        //                var filePath = Path.Combine(_rootDir, company.FileName);
+        //                FileInfo fileInfo = new FileInfo(filePath);
+        //                if (fileInfo.Exists)
+        //                {
+        //                    fileInfo.Delete();
+        //                }
 
-                HrCompany hrCompany = new HrCompany()
-                {
-                    CimId = company.CimId,
-                    CimName = company.CimName,
-                    CimDetails = company.CimDetails,
-                    CimShortName = company.CimShortName,
-                    CimMoto = company.CimMoto,
-                    FileName = fileName,
-                    FileMymeType = fileExt,
-                    FileUpdateDate = DateTime.Now
-                };
+        //                //var rootDir = Path.Combine(_env.WebRootPath, "images");
+        //                if (!Directory.Exists(_rootDir))
+        //                {
+        //                    Directory.CreateDirectory(_rootDir);
+        //                }
+        //                var rootPath = Path.Combine(_rootDir, fileName);
 
-                var result = _company.EditCompanyInfo(hrCompany);
-                if (result==1)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            else
-            {
-                return View();
-            }
 
-        }
+        //                if (company.Logo.Length > 0)
+        //                {
+        //                    using (var stream = new FileStream(rootPath, FileMode.Create))//File.Create(filePath, fileSize))
+        //                    {
+        //                        company.Logo.CopyTo(stream);
+        //                    }
+        //                }
+
+        //            }
+
+        //            company.FileName = fileName;
+        //            company.FileMimeType = fileExt;
+
+        //            hrCompany.FileName = fileName;
+        //            hrCompany.FileMymeType = fileExt;
+
+        //        }
+
+
+
+        //        var result = _company.EditCompanyInfo(hrCompany);
+        //        if (result==1)
+        //        {
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        else
+        //        {
+        //            return View();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return View();
+        //    }
+
+        //}
     }
 }

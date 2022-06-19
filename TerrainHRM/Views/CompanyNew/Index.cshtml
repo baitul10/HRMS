@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TerrainHRM.Models.CompanyInfoMst>
+
+@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Company List";
+}
+
+<div class="row">
+    <div class="col-6 text-lg-left">
+        <h4>Company List</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-controller="CompanyNew" asp-action="CreateNewCompany" class="btn btn-primary">Create New Company</a>
+    </div>
+</div>
+<hr />
+<table class="table table-bordered col-8 table-sm mx-auto">
+    <thead class="thead-dark">
+        <tr>
+            <th>Company Name</th>
+            <th>Short Name</th>
+            <th>Address</th>
+            <th>Moto</th>
+            <th>#</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.CimName
+            </td>
+            <td>
+                @item.CimShortName
+            </td>
+            <td>
+                @item.CimDetails
+            </td>
+            <td>
+                @item.CimMoto
+            </td>
+            <td>
+                <a class="btn btn-primary btn-sm" asp-controller="CompanyNew" asp-action="CompanyDetails" asp-route-id="@item.CimId"><i class="fas fa-edit"></i></a>
+                <a class="btn btn-primary btn-sm" asp-controller="CompanyNew" asp-action="CreateNewCompany" asp-route-id="@item.CimId"><i class="fa fa-trash" aria-hidden="true"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

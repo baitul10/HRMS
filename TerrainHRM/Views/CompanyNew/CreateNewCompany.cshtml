@@ -1,0 +1,378 @@
+﻿@model TerrainHRM.DTOs.HrCompanyDto
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "New Company";
+    var errorMessage = ViewBag.errorMessage;
+}
+
+<style>
+    #cim-photo-01 {
+        width: 50%;
+    }
+
+    .table-td-01-0 {
+        width: 250px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .table-td-01-1 {
+        width: 150px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .table-td-01-2 {
+        width: 300px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    .table-td-01-3 {
+        width: 300px !important;
+        padding: 0px;
+        margin: 0px;
+    }
+
+    input {
+        width: 100%;
+    }
+
+    #btn-submit-01, #btn-office-submit-01 {
+        width: 70px;
+    }
+
+    #btn-add-01, #btn-office-add-01 {
+        width: 70px;
+    }
+
+    #btn-back-01, #btn-office-back-01 {
+        margin-right: 50px;
+    }
+
+    .btn-show-cls-01 {
+        display: inline;
+    }
+
+    .btn-hide-cls-01 {
+        display: none;
+    }
+
+    .btn-cls-01 {
+        width: 30px;
+        height: 20px;
+        padding: 0px;
+        margin: 0px;
+        align-content: center;
+    }
+
+</style>
+
+
+<div class="row">
+    <div class="col-6 text-md-left">
+        <h4>Company Information</h4>
+    </div>
+    <div class="col-6 text-md-right">
+        <a asp-controller="CompanyNew" asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+<h4>@errorMessage</h4>
+
+<form action="CreateNewCompany" method="post">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CimName" class="form-label"></label>
+                        <input class="form-control" asp-for="CimName" id="cim-name-01" />
+                        <span asp-validation-for="CimName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CimShortName" class="form-label"></label>
+                        <input class="form-control" asp-for="CimShortName" id="cim-short-01" />
+                        <span asp-validation-for="CimShortName" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CimDetails" class="form-label"></label>
+                        <input class="form-control" asp-for="CimDetails" id="cim-details-01" />
+                        <span asp-validation-for="CimDetails" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="CimMoto" class="form-label"></label>
+                        <input class="form-control" asp-for="CimMoto" id="cim-moto-01" />
+                        <span asp-validation-for="CimMoto" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Logo" class="control-label"></label>
+                        <input id="cim-photo-01" asp-for="Logo" class="form-control" onchange="document.getElementById('previewPhoto').src = window.URL.createObjectURL(this.files[0])" />
+                        <span asp-validation-for="Logo" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group col-4">
+                    <img id="previewPhoto" src="~/images/NoImage.jpg" alt="Logo Image"
+                         width="125" height="125" style="border:1px;margin-top:20px;" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-bordered table-sm mx-auto" id="office-table-01">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Short Code</th>
+                        <th>Office Name</th>
+                        <th>Address</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody class="p-0 m-0">
+                    @for (int i = 0; i < Model.CompanyOffices.Count; i++)
+                    {
+                    <tr class="p-0 m-0">
+                        <td class="col-2">@Html.EditorFor(x => x.CompanyOffices[i].CoaShortCode, new { Attribute = new { @class = "form-control" } })</td>
+                        <td class="col-4">@Html.EditorFor(x => x.CompanyOffices[i].CoaName, new { Attribute = new { @class = "form-control" } })</td>
+                        <td class="col-6">@Html.EditorFor(x => x.CompanyOffices[i].CoaAddress, new { Attribute = new { @class = "form-control" } })</td>
+                        <td class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
+                            <a href="#" class="btn btn-danger" id="btn-delOffice-01">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </td>
+</tr>
+                    }
+
+                    <!--<td class="col-md-1">
+            <a href="#" class="btn btn-primary btn-cls-01" id="btn-addOffice-01" onclick="addOffice(this)"><i class="fas fa-plus-square"></i></a>
+            <a href="#" class="btn btn-danger btn-cls-01 btn-hide-cls-01" id="btn-delOffice-01"><i class="fas fa-trash"></i></a>
+            <input type="button" class="btn btn-primary" value="Add" />
+    <input type="button" class="btn btn-danger" value="Delete" />
+                    </td>-->
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-12 text-md-right">
+                    <input type="button" value="Add" class="btn btn-primary" id="btn-office-add-01" onclick="addOffice(this);" />
+                    <input type="button" value="Submit" class="btn btn-success" id="btn-office-submit-01" />
+                    <a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-office-back-01">Back</a>
+                </div>
+            </div>
+            <input type="hidden" id="lastOfficeIndex" value="0" />
+        </div>
+    </div>
+ 
+    <div class="col-md-12">
+        <table class="table table-bordered table-sm mx-auto" id="company-table-01">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Short Name</th>
+                    <th>Address</th>
+                    <th>Moto</th>
+                </tr>
+            </thead>
+            <tbody id="table-body-01">
+                @for (int i = 0; i < Model.CompanyDtlList.Count; i++)
+                {
+                    <tr>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidName, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidShortName, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidDetails, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidMoto, new { Attribute = new { @class = "form-control" } })</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-12 text-md-right">
+            <input type="button" value="Add" class="btn btn-primary" id="btn-add-01" onclick="addItem(this);" />
+            <input type="button" value="Submit" class="btn btn-success" id="btn-submit-01" />
+            <a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-back-01">Back</a>
+        </div>
+    </div>
+
+    <input type="hidden" id="hdnLastIndex" value="0" />
+</form>
+
+
+<script type="text/javascript">
+
+    function checkEmpty(e) {
+        switch (e) {
+            case "":
+            case 0:
+            case "0":
+            case null:
+            case false:
+            case undefined:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    function assignClassNameToTd() {
+        var tableTd = document.getElementsByTagName("td");
+        for (c in tableTd) {
+            tableTd[c].className += "table-td-01-" + c;
+        }
+    }
+
+    function GetCompanyObj() {
+        var cimName = document.getElementById("cim-name-01").value;
+        var cimShortName = document.getElementById("cim-short-01").value;
+        var cimDetails = document.getElementById("cim-details-01").value;
+        var cimMoto = document.getElementById("cim-moto-01").value;
+
+        var company = { CimName: cimName, CimShortName: cimShortName, CimDetails: cimDetails, CimMoto: cimMoto };
+        return company;
+    }
+
+
+    function GetCompanyDetailsObj() {
+        var companyList = [];
+        var table = document.getElementsByTagName("table");
+        var rows = table[0].rows;
+        var rowLength = rows.length;
+
+        for (var i = 1; i < rowLength; i++) {
+            var rowCells = rows[i].cells;
+            var cellLength = rows[i].cells.length;
+            //var cimTag = 'CompanyDtlList_' + i + '__CimName';
+            //var cimName = rowCells.getElementById(cimTag).value;
+            //console.log(rowCells);
+
+            var isvalid = true;
+            var companyRow = {};
+            for (var j = 0; j < cellLength; j++) {
+                var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
+                var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+
+                if (j == 0 && checkEmpty(inputValue)) {
+                    isvalid = false;
+                }
+
+                var fieldName = inputAttr.substring(inputAttr.indexOf('.') + 1);
+                companyRow[fieldName] = inputValue;
+            }
+
+            if (isvalid) {
+                companyList.push(companyRow);
+            }
+        }
+
+        //console.log(companyList);
+
+        return companyList;
+
+    }
+
+
+
+    window.addEventListener('load', (event) => {
+        assignClassNameToTd();
+        console.log("widow loaded.");
+    });
+
+
+    $(document).ready(function () {
+        console.log("document Ready");
+        $("#btn-submit-01").click(function () {
+            var companydata = GetCompanyObj();
+            var companydtl = GetCompanyDetailsObj();
+            console.log(companydtl);
+            console.log(companydata);
+            if (confirm("Do you want to save the data?")) {
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("CreateNewCompany", "CompanyNew")',
+                    data: { "company": companydata, "companyDtls": companydtl },
+                    success: function (res) {
+                        console.log(res);
+                        window.location.href = "/CompanyNew/index";
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+    });
+
+
+
+    function addItem(btn) {
+        var table = document.getElementById("company-table-01");
+        var rows = table.getElementsByTagName("tr");
+        var rowOuterHtml = rows[rows.length - 1].outerHTML;
+        var newRow = table.insertRow();
+
+        var lastRowIndex = document.getElementById("hdnLastIndex").value;
+        var nextRowIndex = eval(lastRowIndex) + 1;
+        document.getElementById("hdnLastIndex").value = nextRowIndex;
+
+        rowOuterHtml = rowOuterHtml.replaceAll('_' + lastRowIndex + '_', '_' + nextRowIndex + '_');
+        rowOuterHtml = rowOuterHtml.replaceAll('[' + lastRowIndex + ']', '[' + nextRowIndex + ']');
+        rowOuterHtml = rowOuterHtml.replaceAll('-' + lastRowIndex, '-' + nextRowIndex);
+
+        newRow.innerHTML = rowOuterHtml;
+
+        var btnAddId = btn.id;
+
+        //GetCompanyDetailsObj();
+        //var btnDeleteId = btnAddId.replaceAll('btnadd', 'btnremove');
+
+        //var delButtonId = document.getElementById(btnDeleteId);
+       // delButtonId.classList.add('visible');
+        //delButtonId.classList.remove('invisible');
+
+        //var addButtonId = document.getElementById()
+
+        //console.log(newRow);
+
+    }
+
+
+    function addOffice(btn) {
+        var table = document.getElementById("office-table-01");
+        var rows = table.getElementsByTagName("tr");
+        var rowOuterHtml = rows[rows.length - 1].outerHTML;
+        var newRow = table.insertRow();
+
+        var lastRowIndex = document.getElementById("lastOfficeIndex").value;
+        var nextRowIndex = eval(lastRowIndex) + 1;
+        document.getElementById("lastOfficeIndex").value = nextRowIndex;
+
+        rowOuterHtml = rowOuterHtml.replaceAll('_' + lastRowIndex + '_', '_' + nextRowIndex + '_');
+        rowOuterHtml = rowOuterHtml.replaceAll('[' + lastRowIndex + ']', '[' + nextRowIndex + ']');
+        rowOuterHtml = rowOuterHtml.replaceAll('-' + lastRowIndex, '-' + nextRowIndex);
+
+        newRow.innerHTML = rowOuterHtml;
+
+        var delBtn = document.querySelector("#btn-delOffice-01");
+        delBtn.classList.add("btn-show-cls-01");
+        delBtn.classList.remove("btn-hide-cls-01");
+
+    }
+
+
+</script>

@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+
+// Code scaffolded by EF Core assumes nullable reference types (NRTs) are not used or disabled.
+// If you have enabled NRTs for your project, then un-comment the following line:
+// #nullable disable
 
 namespace TerrainHRM.Models
 {
-    public class HrApplicant
+    public partial class HrApplicant
     {
-        public int ApplicantId { get; set; }
-        [Required]
-        [DisplayName("Applicant Name")]
-        public string Name { get; set; }
+        public HrApplicant()
+        {
+            HrExperience = new HashSet<HrExperience>();
+        }
 
+        public decimal ApplicantId { get; set; }
+        public string ApplicantName { get; set; }
         public string Gender { get; set; }
-        public int Age { get; set; }
-        [Range(1, 25, ErrorMessage = "Sorry! we have no valid position for your experiences")]
-        public int TotalExperiences { get; set; }
+        public decimal? Age { get; set; }
+        public decimal? TotalExperiences { get; set; }
 
-        public virtual List<HrExperiences> HrExperiences { get; set; } = new List<HrExperiences>();
+        public virtual ICollection<HrExperience> HrExperience { get; set; }
     }
 }

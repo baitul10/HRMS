@@ -8,9 +8,9 @@ namespace TerrainHRM.Interfaces
 {
     public interface IApplicantRepository
     {
-        HrApplicant GetApplicant(int id);
-        List<HrApplicant> GetAllApplicants();
-        int InsertApplicant(HrApplicant applicant);
+        HrApplicantOld GetApplicant(int id);
+        List<HrApplicantOld> GetAllApplicants();
+        int InsertApplicant(HrApplicantOld applicant);
 
     }
 }

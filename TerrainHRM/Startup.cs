@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using TerrainHRM.Data;
 using TerrainHRM.Interfaces;
 using TerrainHRM.Repository;
 
@@ -26,10 +22,15 @@ namespace TerrainHRM
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connString = Configuration.GetConnectionString("OrclConnection");
+
+            services.AddDbContext<TerrainHRMContext>(x => x.UseOracle(connString, a => a.UseOracleSQLCompatibility("11")));
+
             services.AddMemoryCache();
             services.AddControllersWithViews();
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<ICompanyRepositoryOld, CompanyRepositoryOld>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

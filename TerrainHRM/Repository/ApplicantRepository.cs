@@ -11,9 +11,9 @@ namespace TerrainHRM.Repository
 {
     public class ApplicantRepository : IApplicantRepository
     {
-        public List<HrApplicant> GetAllApplicants()
+        public List<HrApplicantOld> GetAllApplicants()
         {
-            List<HrApplicant> applicants = new List<HrApplicant>();
+            List<HrApplicantOld> applicants = new List<HrApplicantOld>();
             OracleConnection conn = DbConnectionHelper.GetOrclConnection();
             string query = "SELECT APPLICANT_ID, APPLICANT_NAME, GENDER, AGE, TOTAL_EXPERIENCES FROM HR_APPLICANT";
             OracleCommand cmd = new OracleCommand()
@@ -30,7 +30,7 @@ namespace TerrainHRM.Repository
             {
                 while (reader.Read())
                 {
-                    HrApplicant applicant = new HrApplicant();
+                    HrApplicantOld applicant = new HrApplicantOld();
                     applicant.ApplicantId = Convert.ToInt32(reader[0]);
                     applicant.Name = reader[1].ToString();
                     applicant.Gender = reader[2].ToString();
@@ -47,9 +47,9 @@ namespace TerrainHRM.Repository
             return applicants;
         }
 
-        public HrApplicant GetApplicant(int id)
+        public HrApplicantOld GetApplicant(int id)
         {
-            HrApplicant applicant = new HrApplicant();
+            HrApplicantOld applicant = new HrApplicantOld();
 
             OracleConnection conn = DbConnectionHelper.GetOrclConnection();
 
@@ -121,7 +121,7 @@ namespace TerrainHRM.Repository
         }
 
 
-        public int InsertApplicant(HrApplicant applicant)
+        public int InsertApplicant(HrApplicantOld applicant)
         {
             OracleConnection conn = DbConnectionHelper.GetOrclConnection();
             StringBuilder insertQuery = new StringBuilder();

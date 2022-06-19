@@ -14,7 +14,7 @@ namespace TerrainHRM.Models
 
         public int ExperienceId { get; set; }
         public int ApplicantId { get; set; }
-        public virtual HrApplicant HrApplicant { get; private set; }
+        public virtual HrApplicantOld HrApplicant { get; private set; }
 
         public string CompanyName { get; set; }
         public string Designation { get; set; }
