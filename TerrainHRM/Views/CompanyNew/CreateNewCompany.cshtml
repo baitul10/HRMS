@@ -70,7 +70,7 @@
 </style>
 
 
-<div class="row">
+<div class="row p-2">
     <div class="col-6 text-md-left">
         <h4>Company Information</h4>
     </div>
@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" id="office-div-01">
             <table class="table table-bordered table-sm mx-auto" id="office-table-01">
                 <thead class="thead-dark">
                     <tr>
@@ -153,7 +153,7 @@
                         <td class="col-4">@Html.EditorFor(x => x.CompanyOffices[i].CoaName, new { Attribute = new { @class = "form-control" } })</td>
                         <td class="col-6">@Html.EditorFor(x => x.CompanyOffices[i].CoaAddress, new { Attribute = new { @class = "form-control" } })</td>
                         <td class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
-                            <a href="#" class="btn btn-danger" id="btn-delOffice-01">
+                            <a href="#" class="btn btn-danger" id="btn-delOffice-01" onclick="deleteRow(this)">
                                 <i class="fas fa-times"></i>
                             </a>
                         </td>
@@ -179,7 +179,7 @@
         </div>
     </div>
  
-    <div class="col-md-12">
+    <div class="col-md-12" id="company-div-01">
         <table class="table table-bordered table-sm mx-auto" id="company-table-01">
             <thead class="thead-dark">
                 <tr>
@@ -187,17 +187,23 @@
                     <th>Short Name</th>
                     <th>Address</th>
                     <th>Moto</th>
+                    <th>#</th>
                 </tr>
             </thead>
             <tbody id="table-body-01">
                 @for (int i = 0; i < Model.CompanyDtlList.Count; i++)
                 {
-                    <tr>
-                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidName, new { Attribute = new { @class = "form-control" } })</td>
-                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidShortName, new { Attribute = new { @class = "form-control" } })</td>
-                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidDetails, new { Attribute = new { @class = "form-control" } })</td>
-                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidMoto, new { Attribute = new { @class = "form-control" } })</td>
-                    </tr>
+                <tr>
+                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidName, new { Attribute = new { @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidShortName, new { Attribute = new { @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidDetails, new { Attribute = new { @class = "form-control" } })</td>
+                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidMoto, new { Attribute = new { @class = "form-control" } })</td>
+                    <td  class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
+                        <a href="#" class="btn btn-danger" id="btn-delOffice-01" onclick="deleteRow(this)">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>
@@ -230,6 +236,8 @@
         }
     }
 
+    var isCompanyFlag = 0; // 0 = Company, 1 = Office.
+
     function assignClassNameToTd() {
         var tableTd = document.getElementsByTagName("td");
         for (c in tableTd) {
@@ -248,9 +256,16 @@
     }
 
 
-    function GetCompanyDetailsObj() {
+    function GetCompanyDetailsObj(isCompany) {
+        var companyDiv;
+        if (isCompany == 0) {
+            companyDiv = document.getElementById("company-div-01");
+        }
+        else if (isCompany == 1) {
+            companyDiv = document.getElementById("office-div-01");
+        }
         var companyList = [];
-        var table = document.getElementsByTagName("table");
+        var table = companyDiv.getElementsByClassName("table");
         var rows = table[0].rows;
         var rowLength = rows.length;
 
@@ -263,7 +278,7 @@
 
             var isvalid = true;
             var companyRow = {};
-            for (var j = 0; j < cellLength; j++) {
+            for (var j = 0; j < cellLength-1; j++) {
                 var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
                 var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
 
@@ -297,8 +312,9 @@
     $(document).ready(function () {
         console.log("document Ready");
         $("#btn-submit-01").click(function () {
+            isCompanyFlag = 0;
             var companydata = GetCompanyObj();
-            var companydtl = GetCompanyDetailsObj();
+            var companydtl = GetCompanyDetailsObj(isCompanyFlag);
             console.log(companydtl);
             console.log(companydata);
             if (confirm("Do you want to save the data?")) {
@@ -316,6 +332,32 @@
                 });
             }
         });
+
+
+
+
+        $("#btn-office-submit-01").click(function () {
+            isCompanyFlag = 1;
+            var officeInfo = GetCompanyDetailsObj(isCompanyFlag);
+            console.log(officeInfo);
+            if (confirm("Do you want to save the data?")) {
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("InsertUpdateCompanyOffice", "CompanyNew")',
+                    data: { "companyOffices": officeInfo },
+                    success: function (res) {
+                        console.log(res);
+                        //window.location.href = "/CompanyNew/index";
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+
+
+
     });
 
 
@@ -372,6 +414,12 @@
         delBtn.classList.add("btn-show-cls-01");
         delBtn.classList.remove("btn-hide-cls-01");
 
+    }
+
+
+    function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
     }
 
 

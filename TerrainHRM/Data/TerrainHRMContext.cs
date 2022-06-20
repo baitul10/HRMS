@@ -275,7 +275,7 @@ namespace TerrainHRM.Data
                 entity.Property(e => e.CoaId).HasColumnName("COA_ID");
 
                 entity.Property(e => e.CoaName)
-                    .HasColumnName("CID_NAME")
+                    .HasColumnName("COA_NAME")
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
@@ -292,6 +292,11 @@ namespace TerrainHRM.Data
                 entity.Property(e => e.CoaShortCode)
                     .HasColumnName("COA_SHORT_CODE")
                     .HasMaxLength(10)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CoaUseTypeFlag)
+                    .HasColumnName("COA_USE_TYPE_FLAG")
+                    .HasMaxLength(2)
                     .IsUnicode(false);
             });
 

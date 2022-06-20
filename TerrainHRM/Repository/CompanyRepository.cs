@@ -73,11 +73,16 @@ namespace TerrainHRM.Repository
 
         public int CreateCompanyOffice(List<CompanyOfficeAddress> companyOffices)
         {
+
+            var coaId = DbConnectionHelper.GetGeneratedPK("COMPANY_OFFICE_ADDRESS", "COA_ID") + 1;
+
             if (companyOffices.Count > 0)
             {
                 foreach (var office in companyOffices)
                 {
+                    office.CoaId = coaId;
                     _context.CompanyOfficeAddress.Add(office);
+                    ++coaId;
                 }
                 var result = _context.SaveChanges();
                 return result;
