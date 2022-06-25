@@ -7,7 +7,7 @@
 }
 
 <style>
-    #cim-photo-01 {
+    #cim-photo-02 {
         width: 50%;
     }
 
@@ -39,34 +39,33 @@
         width: 100%;
     }
 
-    #btn-submit-01, #btn-office-submit-01 {
+    #btn-submit-02, #btn-office-submit-02 {
         width: 70px;
     }
 
-    #btn-add-01, #btn-office-add-01 {
+    #btn-add-02, #btn-office-add-02 {
         width: 70px;
     }
 
-    #btn-back-01, #btn-office-back-01 {
+    #btn-back-02, #btn-office-back-02 {
         margin-right: 50px;
     }
 
-    .btn-show-cls-01 {
+    .btn-show-cls-02 {
         display: inline;
     }
 
-    .btn-hide-cls-01 {
+    .btn-hide-cls-02 {
         display: none;
     }
 
-    .btn-cls-01 {
+    .btn-cls-02 {
         width: 30px;
         height: 20px;
         padding: 0px;
         margin: 0px;
         align-content: center;
     }
-
 </style>
 
 
@@ -88,8 +87,9 @@
                 <div class="col-md-6">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
+                        <input asp-for="CimId" class="form-control" hidden id="cim-id-02" />
                         <label asp-for="CimName" class="form-label"></label>
-                        <input class="form-control" asp-for="CimName" id="cim-name-01" />
+                        <input class="form-control" asp-for="CimName" id="cim-name-02" />
                         <span asp-validation-for="CimName" class="text-danger"></span>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="CimShortName" class="form-label"></label>
-                        <input class="form-control" asp-for="CimShortName" id="cim-short-01" />
+                        <input class="form-control" asp-for="CimShortName" id="cim-short-02" />
                         <span asp-validation-for="CimShortName" class="text-danger"></span>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="CimDetails" class="form-label"></label>
-                        <input class="form-control" asp-for="CimDetails" id="cim-details-01" />
+                        <input class="form-control" asp-for="CimDetails" id="cim-details-02" />
                         <span asp-validation-for="CimDetails" class="text-danger"></span>
                     </div>
                 </div>
@@ -115,7 +115,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="CimMoto" class="form-label"></label>
-                        <input class="form-control" asp-for="CimMoto" id="cim-moto-01" />
+                        <input class="form-control" asp-for="CimMoto" id="cim-moto-02" />
                         <span asp-validation-for="CimMoto" class="text-danger"></span>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Logo" class="control-label"></label>
-                        <input id="cim-photo-01" asp-for="Logo" class="form-control" onchange="document.getElementById('previewPhoto').src = window.URL.createObjectURL(this.files[0])" />
+                        <input id="cim-photo-02" asp-for="Logo" class="form-control" onchange="document.getElementById('previewPhoto').src = window.URL.createObjectURL(this.files[0])" />
                         <span asp-validation-for="Logo" class="text-danger"></span>
                     </div>
                 </div>
@@ -135,8 +135,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6" id="office-div-01">
-            <table class="table table-bordered table-sm mx-auto" id="office-table-01">
+        <div class="col-md-6" id="office-div-02">
+            <table class="table table-bordered table-sm mx-auto" id="office-table-02">
                 <thead class="thead-dark">
                     <tr>
                         <th>Short Code</th>
@@ -148,40 +148,40 @@
                 <tbody class="p-0 m-0">
                     @for (int i = 0; i < Model.CompanyOffices.Count; i++)
                     {
-                    <tr class="p-0 m-0">
-                        <td style="display:none;">@Html.EditorFor(x => x.CompanyOffices[i].CoaId, new { Attribute = new { @class = "form-control" } })</td>
-                        <td class="col-2">@Html.EditorFor(x => x.CompanyOffices[i].CoaShortCode, new { Attribute = new { @class = "form-control" } })</td>
-                        <td class="col-4">@Html.EditorFor(x => x.CompanyOffices[i].CoaName, new { Attribute = new { @class = "form-control" } })</td>
-                        <td class="col-6">@Html.EditorFor(x => x.CompanyOffices[i].CoaAddress, new { Attribute = new { @class = "form-control" } })</td>
-                        <td class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
-                            <a href="#" class="btn btn-danger" id="btn-delOffice-01" onclick="deleteRow(this)">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        </td>
-</tr>
+                        <tr class="p-0 m-0">
+                            <td style="display:none;">@Html.EditorFor(x => x.CompanyOffices[i].CoaId, new { Attribute = new { @class = "form-control" } })</td>
+                            <td class="col-2">@Html.EditorFor(x => x.CompanyOffices[i].CoaShortCode, new { Attribute = new { @class = "form-control" } })</td>
+                            <td class="col-4">@Html.EditorFor(x => x.CompanyOffices[i].CoaName, new { Attribute = new { @class = "form-control" } })</td>
+                            <td class="col-6">@Html.EditorFor(x => x.CompanyOffices[i].CoaAddress, new { Attribute = new { @class = "form-control" } })</td>
+                            <td class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
+                                <a href="#" class="btn btn-danger" id="btn-delOffice-01" onclick="deleteRow(this)">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </td>
+                        </tr>
                     }
 
                     <!--<td class="col-md-1">
-            <a href="#" class="btn btn-primary btn-cls-01" id="btn-addOffice-01" onclick="addOffice(this)"><i class="fas fa-plus-square"></i></a>
-            <a href="#" class="btn btn-danger btn-cls-01 btn-hide-cls-01" id="btn-delOffice-01"><i class="fas fa-trash"></i></a>
-            <input type="button" class="btn btn-primary" value="Add" />
-    <input type="button" class="btn btn-danger" value="Delete" />
-                    </td>-->
+                            <a href="#" class="btn btn-primary btn-cls-01" id="btn-addOffice-01" onclick="addOffice(this)"><i class="fas fa-plus-square"></i></a>
+                            <a href="#" class="btn btn-danger btn-cls-01 btn-hide-cls-01" id="btn-delOffice-01"><i class="fas fa-trash"></i></a>
+                            <input type="button" class="btn btn-primary" value="Add" />
+                    <input type="button" class="btn btn-danger" value="Delete" />
+                                    </td>-->
                 </tbody>
             </table>
             <div class="row">
                 <div class="col-12 text-md-right">
-                    <input type="button" value="Add" class="btn btn-primary" id="btn-office-add-01" onclick="addOffice(this);" />
-                    <input type="button" value="Submit" class="btn btn-success" id="btn-office-submit-01" />
-                    <a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-office-back-01">Back</a>
+                    <input type="button" value="Add" class="btn btn-primary" id="btn-office-add-02" onclick="addOffice(this);" />
+                    @*<input type="button" value="Submit" class="btn btn-success" id="btn-office-submit-02" />*@
+                    @*<a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-office-back-02">Back</a>*@
                 </div>
             </div>
             <input type="hidden" id="lastOfficeIndex" value="0" />
         </div>
     </div>
- 
-    <div class="col-md-12" id="company-div-01">
-        <table class="table table-bordered table-sm mx-auto" id="company-table-01">
+
+    <div class="col-md-12" id="company-div-02">
+        <table class="table table-bordered table-sm mx-auto" id="company-table-02">
             <thead class="thead-dark">
                 <tr>
                     <th>Name</th>
@@ -194,26 +194,27 @@
             <tbody id="table-body-01">
                 @for (int i = 0; i < Model.CompanyDtlList.Count; i++)
                 {
-                <tr>
-                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidName, new { Attribute = new { @class = "form-control" } })</td>
-                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidShortName, new { Attribute = new { @class = "form-control" } })</td>
-                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidDetails, new { Attribute = new { @class = "form-control" } })</td>
-                    <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidMoto, new { Attribute = new { @class = "form-control" } })</td>
-                    <td  class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
-                        <a href="#" class="btn btn-danger" id="btn-delOffice-01" onclick="deleteRow(this)">
-                            <i class="fas fa-times"></i>
-                        </a>
-                    </td>
-                </tr>
+                    <tr>
+                        <td style="display:none;">@Html.EditorFor(x=>x.CompanyDtlList[i].CidId, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidName, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidShortName, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidDetails, new { Attribute = new { @class = "form-control" } })</td>
+                        <td>@Html.EditorFor(x => x.CompanyDtlList[i].CidMoto, new { Attribute = new { @class = "form-control" } })</td>
+                        <td class="col-1" style="width: 20px; height: inherit; padding: 0px; margin: 0px; align-content: center;">
+                            <a href="#" class="btn btn-danger" id="btn-delOffice-02" onclick="deleteRow(this)">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table>
     </div>
     <div class="row">
         <div class="col-12 text-md-right">
-            <input type="button" value="Add" class="btn btn-primary" id="btn-add-01" onclick="addItem(this);" />
-            <input type="button" value="Submit" class="btn btn-success" id="btn-submit-01" />
-            <a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-back-01">Back</a>
+            <input type="button" value="Add" class="btn btn-primary" id="btn-add-02" onclick="addItem(this);" />
+            <input type="button" value="Submit" class="btn btn-success" id="btn-submit-02" />
+            <a class="btn btn-warning" asp-controller="CompanyNew" asp-action="Index" id="btn-back-02">Back</a>
         </div>
     </div>
 
@@ -239,31 +240,68 @@
 
     var isCompanyFlag = 0; // 0 = Company, 1 = Office.
 
-    function assignClassNameToTd() {
-        var tableTd = document.getElementsByTagName("td");
-        for (c in tableTd) {
-            tableTd[c].className += "table-td-01-" + c;
-        }
-    }
+    //function assignClassNameToTd() {
+    //    var tableTd = document.getElementsByTagName("td");
+    //    for (c in tableTd) {
+    //        tableTd[c].className += "table-td-01-" + c;
+    //    }
+    //}
 
     function GetCompanyObj() {
-        var cimName = document.getElementById("cim-name-01").value;
-        var cimShortName = document.getElementById("cim-short-01").value;
-        var cimDetails = document.getElementById("cim-details-01").value;
-        var cimMoto = document.getElementById("cim-moto-01").value;
+        var cimId = document.getElementById("cim-id-02").value;
+        var cimName = document.getElementById("cim-name-02").value;
+        var cimShortName = document.getElementById("cim-short-02").value;
+        var cimDetails = document.getElementById("cim-details-02").value;
+        var cimMoto = document.getElementById("cim-moto-02").value;
 
-        var company = { CimName: cimName, CimShortName: cimShortName, CimDetails: cimDetails, CimMoto: cimMoto };
+        var company = { CimId: cimId, CimName: cimName, CimShortName: cimShortName, CimDetails: cimDetails, CimMoto: cimMoto };
         return company;
     }
 
+    //function ClearTableRow() {
+    //    var companyDivTag;
+    //    if (isCompany == 0) {
+    //        companyDivTag = document.getElementById("company-div-02");
+    //    }
+    //    else if (isCompany == 1) {
+    //        companyDivTag = document.getElementById("office-div-02");
+    //    }
+    //    var companyList = [];
+    //    var table = companyDivTag.getElementsByClassName("table");
+    //    var rows = table[0].rows;
+    //    var rowLength = rows.length;
+
+    //    for (var i = 1; i < rowLength; i++) {
+    //        var rowCells = rows[i].cells;
+    //        var cellLength = rows[i].cells.length;
+    //        //var cimTag = 'CompanyDtlList_' + i + '__CimName';
+    //        //var cimName = rowCells.getElementById(cimTag).value;
+    //        //console.log(rowCells);
+
+    //        var isvalid = true;
+    //        var companyRow = {};
+    //        for (var j = 0; j < cellLength - 1; j++) {
+    //            var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
+    //            //console.log(inputValue);
+    //            var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+    //            //console.log(inputAttr);
+
+    //            if (j == 1 && checkEmpty(inputValue)) {
+    //                isvalid = false;
+    //            }
+
+    //            var fieldName = inputAttr.substring(inputAttr.indexOf('.') + 1);
+    //            companyRow[fieldName] = inputValue;
+    //        }
+    //}
 
     function GetCompanyDetailsObj(isCompany) {
         var companyDiv;
         if (isCompany == 0) {
-            companyDiv = document.getElementById("company-div-01");
+            companyDiv = document.getElementById("company-div-02");
         }
         else if (isCompany == 1) {
-            companyDiv = document.getElementById("office-div-01");
+            companyDiv = document.getElementById("office-div-02");
         }
         var companyList = [];
         var table = companyDiv.getElementsByClassName("table");
@@ -281,9 +319,11 @@
             var companyRow = {};
             for (var j = 0; j < cellLength-1; j++) {
                 var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
+                //console.log(inputValue);
                 var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+                //console.log(inputAttr);
 
-                if (j == 0 && checkEmpty(inputValue)) {
+                if (j == 1 && checkEmpty(inputValue)) {
                     isvalid = false;
                 }
 
@@ -296,48 +336,84 @@
             }
         }
 
-        //console.log(companyList);
-
         return companyList;
 
     }
 
+    function addNewRow(isCompanyOrOffice) {
+        var companyDiv;
 
+            if (isCompanyOrOffice == 0) {
+                    companyDiv = document.getElementById("company-div-02");
+                }
+            else if (isCompanyOrOffice == 1) {
+                    companyDiv = document.getElementById("office-div-02");
+        }
+
+        var table = companyDiv.getElementsByClassName("table");
+
+        var rows = table[0].rows;
+
+        var lastRow = rows[rows.length - 1];
+
+        var tableTd = lastRow.getElementsByTagName("td");
+
+            //console.log(tableTd);
+        for (var i = 0; i < tableTd.length - 1; i++) {
+            var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+            if (i === 0) {
+                lastChildofTd.value = "0";
+                console.log("first Child");
+            } else {
+                lastChildofTd.value = "";
+            }
+            //tableTd[i].getElementsByTagName("input")[0].value = "";
+            //var inputEl = lastChildofTd.getElementsByTagName("input");
+            //lastChildofTd.innerHTML
+            //lastChildofTd = null;
+            //console.log(lastChildofTd);
+        }
+    }
 
     window.addEventListener('load', (event) => {
-        assignClassNameToTd();
-        console.log("widow loaded.");
+        //assignClassNameToTd();
+        console.log("window loaded.");
     });
 
 
     $(document).ready(function () {
         console.log("document Ready");
-        $("#btn-submit-01").click(function () {
+        $("#btn-submit-02").click(function () {
             isCompanyFlag = 0;
             var companydata = GetCompanyObj();
             var companydtl = GetCompanyDetailsObj(isCompanyFlag);
+            isCompanyFlag = 1;
+            var officeDtl = GetCompanyDetailsObj(isCompanyFlag);
             console.log(companydtl);
             console.log(companydata);
+            console.log(officeDtl);
             if (confirm("Do you want to save the data?")) {
+                //addNewRow();
                 $.ajax({
                     type: "post",
-                    url: '@Url.Action("CreateNewCompany", "CompanyNew")',
-                    data: { "company": companydata, "companyDtls": companydtl },
+                    url: '@Url.Action("CreateUpdateCompanyInfo", "CompanyNew")',
+                    data: { "company": companydata, "companyDtl": companydtl, "offices": officeDtl },
                     success: function (res) {
                         console.log(res);
-                        window.location.href = "/CompanyNew/index";
+                        //window.location.href = "/CompanyNew/CreateUpdateCompanyInfo";
                     },
                     error: function (err) {
                         console.log(err);
                     }
                 });
+                console.log("alert success.")
             }
         });
 
 
 
 
-        $("#btn-office-submit-01").click(function () {
+        @*$("#btn-office-submit-02").click(function () {
             isCompanyFlag = 1;
             var officeInfo = GetCompanyDetailsObj(isCompanyFlag);
             console.log(officeInfo);
@@ -354,8 +430,9 @@
                         console.log(err);
                     }
                 });
+                var a = 0;
             }
-        });
+        });*@
 
 
 
@@ -364,8 +441,10 @@
 
 
     function addItem(btn) {
-        var table = document.getElementById("company-table-01");
+        var table = document.getElementById("company-table-02");
         var rows = table.getElementsByTagName("tr");
+        var rowCount = rows.length;
+        console.log("first: "+rowCount);
         var rowOuterHtml = rows[rows.length - 1].outerHTML;
         var newRow = table.insertRow();
 
@@ -379,7 +458,9 @@
 
         newRow.innerHTML = rowOuterHtml;
 
-        var btnAddId = btn.id;
+        isCompanyFlag = 0;
+        addNewRow(isCompanyFlag);
+
 
         //GetCompanyDetailsObj();
         //var btnDeleteId = btnAddId.replaceAll('btnadd', 'btnremove');
@@ -396,7 +477,7 @@
 
 
     function addOffice(btn) {
-        var table = document.getElementById("office-table-01");
+        var table = document.getElementById("office-table-02");
         var rows = table.getElementsByTagName("tr");
         var rowOuterHtml = rows[rows.length - 1].outerHTML;
         var newRow = table.insertRow();
@@ -411,9 +492,11 @@
 
         newRow.innerHTML = rowOuterHtml;
 
-        var delBtn = document.querySelector("#btn-delOffice-01");
-        delBtn.classList.add("btn-show-cls-01");
-        delBtn.classList.remove("btn-hide-cls-01");
+        var delBtn = document.querySelector("#btn-delOffice-02");
+        delBtn.classList.add("btn-show-cls-02");
+        delBtn.classList.remove("btn-hide-cls-02");
+        isCompanyFlag = 1;
+        addNewRow(isCompanyFlag);
 
     }
 

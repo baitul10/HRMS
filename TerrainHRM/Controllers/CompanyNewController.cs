@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using TerrainHRM.DTOs;
 using TerrainHRM.Helper;
@@ -154,6 +155,73 @@ namespace TerrainHRM.Controllers
         {
             var officeDeleted = _company.DeleteCompanyOffice(id);
             return officeDeleted;
+        }
+
+        [HttpGet]
+        public IActionResult CreateUpdateCompanyInfo()
+        {
+            var company = _company.GetCompanyWithOffices();
+            if (company.CimId==1)
+            {
+                return View(company);
+            }
+            else
+            {
+                company = new HrCompanyDto();
+                company.CompanyDtlList = new List<CompanyInfoDtl>()
+                    {
+                        new CompanyInfoDtl(){CidId = 0}
+                    };
+
+                        company.CompanyOffices = new List<CompanyOfficeAddress>()
+                    {
+                        new CompanyOfficeAddress(){CoaId = 0}
+                    };
+            }
+
+            return View(company);
+        }
+
+        [HttpPost]
+        public IActionResult CreateUpdateCompanyInfo(CompanyInfoMst company, List<CompanyInfoDtl> companyDtl, List<CompanyOfficeAddress> offices)
+        {
+            //var result = 0;
+            var companyDto = new HrCompanyDto();
+            try
+            {
+                 _company.CreateComapnyOffice(company, companyDtl, offices);
+            }
+            catch(Exception e)
+            {
+                var message = e.Message;
+                throw new Exception("Unauthorized Error Occurred.");
+            }
+
+            //if (result>0)
+            //{
+            //    companyDto.CimName = company.CimName;
+            //    companyDto.CimShortName = company.CimShortName;
+            //    companyDto.CimDetails = company.CimDetails;
+            //    companyDto.CimMoto = company.CimMoto;
+            //    companyDto.CimId = company.CimId;
+            //    companyDto.FileName = company.CimFileName;
+
+            //    companyDto.CompanyDtlList = companyDtl;
+            //    companyDto.CompanyOffices = offices;
+            //}
+            //else
+            //{
+            //    companyDto.CompanyDtlList = new List<CompanyInfoDtl>()
+            //    {
+            //        new CompanyInfoDtl(){CidId = 0}
+            //    };
+
+            //    companyDto.CompanyOffices = new List<CompanyOfficeAddress>()
+            //    {
+            //        new CompanyOfficeAddress(){CoaId = 0}
+            //    };
+            //}
+            return View(companyDto);
         }
     }
 }
