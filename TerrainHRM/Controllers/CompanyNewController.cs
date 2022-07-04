@@ -185,41 +185,15 @@ namespace TerrainHRM.Controllers
         [HttpPost]
         public IActionResult CreateUpdateCompanyInfo(CompanyInfoMst company, List<CompanyInfoDtl> companyDtl, List<CompanyOfficeAddress> offices)
         {
-            //var result = 0;
             var companyDto = new HrCompanyDto();
-            try
-            {
-                 _company.CreateComapnyOffice(company, companyDtl, offices);
-            }
-            catch(Exception e)
-            {
-                var message = e.Message;
-                throw new Exception("Unauthorized Error Occurred.");
-            }
-
-            //if (result>0)
+            //try
             //{
-            //    companyDto.CimName = company.CimName;
-            //    companyDto.CimShortName = company.CimShortName;
-            //    companyDto.CimDetails = company.CimDetails;
-            //    companyDto.CimMoto = company.CimMoto;
-            //    companyDto.CimId = company.CimId;
-            //    companyDto.FileName = company.CimFileName;
-
-            //    companyDto.CompanyDtlList = companyDtl;
-            //    companyDto.CompanyOffices = offices;
+                companyDto = _company.CreateComapnyOffice(company, companyDtl, offices);
             //}
-            //else
-            //{
-            //    companyDto.CompanyDtlList = new List<CompanyInfoDtl>()
-            //    {
-            //        new CompanyInfoDtl(){CidId = 0}
-            //    };
-
-            //    companyDto.CompanyOffices = new List<CompanyOfficeAddress>()
-            //    {
-            //        new CompanyOfficeAddress(){CoaId = 0}
-            //    };
+           // catch(Exception e)
+           // {
+             //   var message = e.Message;
+              //  throw new Exception("Unauthorized Error Occurred.");
             //}
             return View(companyDto);
         }

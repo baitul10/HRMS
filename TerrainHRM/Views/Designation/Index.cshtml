@@ -1,0 +1,23 @@
+﻿@model IEnumerable<TerrainHRM.Models.DesigMst>
+
+@{
+    ViewData["Title"] = "Initial Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    #btn-designation{
+        background-color:black;
+        color:white;
+        font-weight:bold;
+        font-style:italic;
+    }
+
+    #designation-page{
+        position:relative;
+    }
+</style>
+
+<div id="designation-page">
+    <partial name="_MasterTabButtons" />
+</div>

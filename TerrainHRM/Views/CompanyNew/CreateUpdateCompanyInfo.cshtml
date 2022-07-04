@@ -82,7 +82,9 @@
 <form action="CreateNewCompany" method="post">
     <div class="row">
         <div class="col-md-6">
-
+            <input hidden asp-for="FileName" id="cim-file-02" class="form-control" />
+            <input hidden asp-for="FileMymeType" id="cim-mime-02" class="form-control" />
+            <input hidden asp-for="FileUpdateDate" id="cim-update-02" class="form-control" />
             <div class="row">
                 <div class="col-md-6">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -253,8 +255,11 @@
         var cimShortName = document.getElementById("cim-short-02").value;
         var cimDetails = document.getElementById("cim-details-02").value;
         var cimMoto = document.getElementById("cim-moto-02").value;
+        var cimFileName = document.getElementById("cim-file-02").value;
+        var cimMimeType = document.getElementById("cim-mime-02").value;
+        var cimUpdateDate = document.getElementById("cim-update-02").value;
 
-        var company = { CimId: cimId, CimName: cimName, CimShortName: cimShortName, CimDetails: cimDetails, CimMoto: cimMoto };
+        var company = { CimId: cimId, CimName: cimName, CimShortName: cimShortName, CimDetails: cimDetails, CimMoto: cimMoto, CimFileName: cimFileName, CimFileMimetype: cimMimeType, CimUpdateDate: cimUpdateDate };
         return company;
     }
 
@@ -393,14 +398,13 @@
             console.log(companydata);
             console.log(officeDtl);
             if (confirm("Do you want to save the data?")) {
-                //addNewRow();
                 $.ajax({
                     type: "post",
                     url: '@Url.Action("CreateUpdateCompanyInfo", "CompanyNew")',
                     data: { "company": companydata, "companyDtl": companydtl, "offices": officeDtl },
                     success: function (res) {
                         console.log(res);
-                        //window.location.href = "/CompanyNew/CreateUpdateCompanyInfo";
+                        window.location.href = "/CompanyNew/CreateUpdateCompanyInfo";
                     },
                     error: function (err) {
                         console.log(err);

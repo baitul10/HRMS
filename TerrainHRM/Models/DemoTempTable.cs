@@ -9,7 +9,7 @@ namespace TerrainHRM.Models
 {
     public partial class DemoTempTable
     {
-        public decimal? EmpId { get; set; }
-        public string EmpName { get; set; }
+        public string ErrorCode { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }

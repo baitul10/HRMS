@@ -91,13 +91,14 @@ namespace TerrainHRM.Repository
             var maxCimId = DbConnectionHelper.GetGeneratedPK("COMPANY_INFO_MST", "CIM_ID") + 1;
             if (company.CimId > 0)
             {
-                if (string.IsNullOrEmpty(company.CimFileName))
-                {
-                    var companyOld = _context.CompanyInfoMst.Where(x => x.CimId == 1).FirstOrDefault();
-                    company.CimFileName = companyOld.CimFileName;
-                    company.CimFileMimetype = companyOld.CimFileMimetype;
-                    company.CimUpdateDate = companyOld.CimUpdateDate;
-                }
+                //if (string.IsNullOrEmpty(company.CimFileName))
+                //{
+                //    //var companyOld = _context.CompanyInfoMst.Where(x => x.CimId == 1).FirstOrDefault();
+                //    company.CimFileName = companyOld.CimFileName;
+                //    company.CimFileMimetype = companyOld.CimFileMimetype;
+                //    company.CimUpdateDate = companyOld.CimUpdateDate;
+                //}
+
                 _context.CompanyInfoMst.Update(company);
                 _cimId = company.CimId;
             }
@@ -213,23 +214,21 @@ namespace TerrainHRM.Repository
         {
             bool isSuccess = false;
             var companyDto = new HrCompanyDto();
-            try
-            {
-                var newCompany = CreateUpdateCompany(company);
-                isSuccess = true;
-                if (newCompany.CimName != null)
+            //try
+            //{
+                if (!string.IsNullOrEmpty(company.CimName))
                 {
+                    var newCompany = CreateUpdateCompany(company);
+                    isSuccess = true;
+
                     companyDto.CimName = newCompany.CimName;
                     companyDto.CimShortName = newCompany.CimShortName;
                     companyDto.CimDetails = newCompany.CimDetails;
                     companyDto.CimMoto = newCompany.CimMoto;
-                    if (newCompany.CimFileName != null)
-                    {
-                        companyDto.FileName = newCompany.CimFileName;
-                        companyDto.FileUpdateDate = (DateTime)newCompany.CimUpdateDate;
-                        companyDto.FileMymeType = newCompany.CimFileMimetype;
+                    companyDto.FileName = newCompany.CimFileName;
+                    companyDto.FileUpdateDate = newCompany.CimUpdateDate.HasValue ? (DateTime)newCompany.CimUpdateDate: DateTime.Now;
+                    companyDto.FileMymeType = newCompany.CimFileMimetype;
 
-                    }
 
                     var isCompanyDtlInserted = CreateUpdateCompanyDtl(companiesDtl);
                     companyDto.CompanyDtlList = isCompanyDtlInserted;
@@ -244,12 +243,13 @@ namespace TerrainHRM.Repository
                     isSuccess = false;
                     //throw new Exception("Unauthorized error occurred!");
                 }
-            } catch(Exception e)
-            {
-                var message = e.Message;
-                isSuccess = false;
-                //throw new Exception("Unauthorized error occurred!");
-            }
+           // } 
+        //catch(Exception e)
+            //{
+            //    var message = e.Message;
+            //    isSuccess = false;
+            //    //throw new Exception("Unauthorized error occurred!");
+            //}
             if (isSuccess)
             {
                 return companyDto;
