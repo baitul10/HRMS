@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Serilog;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using TerrainHRM.Data;
+using TerrainHRM.Helper;
 using TerrainHRM.Interfaces;
 using TerrainHRM.Models;
 
@@ -28,16 +31,29 @@ namespace TerrainHRM.Repository
         public List<DesigMst> CreateUpdateDesig(List<DesigMst> desig)
         {
             var desigList = new List<DesigMst>();
+
             if (desig.Count>0)
             {
+                var maxDesigId = DbConnectionHelper.GetGeneratedPK("DESIG_MST", "DESIG_ID") + 1;
                 foreach (var item in desig)
                 {
                     if (item.DesigId>0)
                     {
                         _context.DesigMsts.Update(item);
+                        desigList.Add(item);
+                    }
+                    else
+                    {
+                        item.DesigId = maxDesigId;
+                        _context.DesigMsts.Add(item);
+                        desigList.Add(item);
+                        ++maxDesigId;
                     }
                 }
+                _context.SaveChanges();
             }
+            var jsonString = JsonSerializer.Serialize(desigList);
+            Log.Debug(jsonString);
             return desigList;
         }
 

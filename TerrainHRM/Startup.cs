@@ -27,7 +27,12 @@ namespace TerrainHRM
             services.AddDbContext<TerrainHRMContext>(x => x.UseOracle(connString, a => a.UseOracleSQLCompatibility("11")));
 
             services.AddMemoryCache();
-            services.AddControllersWithViews();
+
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddRazorPages().AddNewtonsoftJson();
+
+            //services.AddControllersWithViews().AddNewtonsoftJson();
+
             services.AddScoped<ICompanyRepositoryOld, CompanyRepositoryOld>();
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
