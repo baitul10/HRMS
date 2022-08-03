@@ -9,10 +9,12 @@ namespace TerrainHRM.Controllers
     public class DesignationController : Controller
     {
         private readonly IDesigRepository _desig;
+        private readonly IDivisionRepository _division;
 
-        public DesignationController(IDesigRepository desig)
+        public DesignationController(IDesigRepository desig, IDivisionRepository division)
         {
             _desig = desig;
+            _division = division;
         }
         public IActionResult Index()
         {
@@ -27,6 +29,7 @@ namespace TerrainHRM.Controllers
             return Ok(desigList);
         }
 
+        [HttpPost]
         public IActionResult DeleteDesignation(int id)
         {
             var result = _desig.DeleteDesig(id);
@@ -35,6 +38,12 @@ namespace TerrainHRM.Controllers
                 throw new Exception("Unauthorized error occurred!");
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DivisionIndex()
+        {
+            var divisions = _division.GetDivisions();
+            return View("DivisionView", divisions);
         }
 
     }

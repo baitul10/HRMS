@@ -1,0 +1,38 @@
+﻿@model TerrainHRM.Models.Errors;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Errors";
+}
+
+
+<h4>Error</h4>
+<hr />
+<div class="row">
+    <div class="col-2">
+
+    </div>
+    <div class="col-8">
+        <div class="form-group">
+            <label>Event :</label>
+            <input asp-for="ErrorEvent" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <label>Errors :</label>
+            <input asp-for="ErrorMessage" class="form-control" readonly />
+        </div>
+        <div class="form-group">
+            <input type="button" class="btn btn-primary" value="Back" id="btn-error-back" />
+        </div>
+    </div>
+    <div class="col-2">
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    const btnBack = document.getElementById("btn-error-back");
+    btnBack.addEventListener("click", function () {
+        history.back();
+    });
+</script>

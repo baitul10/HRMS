@@ -4,7 +4,7 @@
         overflow: hidden;
     }
 
-    .outer-action_btn {
+    .outer-action-btn {
         position:sticky;
         top:0;
         left:0;
@@ -14,34 +14,64 @@
     }
 
     .buttons {
-        width: 150px;
-        margin: 0 auto;
-        display: inline-block;
+        width:100%;
+        margin: auto 0 0 0;
     }
 
-    .action_btn{
-        display:inline-block;
+    .action-btn {
+        display: inline-block;
+        font-size: 14px;
+        text-align: center;
+        width: 120px;
+        height: 30px;
+        padding: 5px;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        border-radius: 15px;
+        margin:2px;
     }
+
+    .action-btn:active {
+        background-color: black;
+        color:white;
+        box-shadow: 0 5px #666;
+        transform: translateY(1px);
+    }
+
 </style>
 <div class="row" id="scroll-div">
-
     <div class="buttons col-12">
-
-        <div class="outer-action_btn">
-
-            <button id="btn-division" class="action_btn" type="button">Division</button>
-            <button id="btn-designation" class="action_btn" type="button">Designation</button>
-            <button id="btn-office-shift" class="action_btn" type="button">Office Shift</button>
-            <button id="btn-education" class="action_btn" type="button">Education</button>
-            <button id="btn-university" class="action_btn" type="button">Board/University</button>
-            <button id="btn-subject" class="action_btn" type="button">Group/Subject</button>
-            <button id="btn-attach" class="action_btn" type="button">Attach Detais</button>
-            <button id="btn-joining" class="action_btn" type="button">Joining Activation</button>
-            <button id="btn-closing" class="action_btn" type="button">Closing Activation</button>
-            <button id="btn-performance" class="action_btn" type="button">Performance Indicator</button>
-
-        </div>
-
+        <div id="scroller">
+            <div class="outer-action-btn">
+                <button id="btn-division" class="action-btn" type="button">Division</button>
+                <button id="btn-designation" class="action-btn" type="button">Designation</button>
+                <button id="btn-office-shift" class="action-btn" type="button">Office Shift</button>
+                <button id="btn-education" class="action-btn" type="button">Education</button>
+                <button id="btn-university" class="action-btn" type="button">Board/University</button>
+                <button id="btn-subject" class="action-btn" type="button">Group/Subject</button>
+                <button id="btn-attach" class="action-btn" type="button">Attach Detais</button>
+                <button id="btn-joining" class="action-btn" type="button">Joining Activation</button>
+                <button id="btn-closing" class="action-btn" type="button">Closing Activation</button>
+                <button id="btn-performance" class="action-btn" type="button">Performance Indicator</button>
+            </div>
+        </div>        
     </div>
-
 </div>
+
+
+<script type="text/javascript">
+    var btnDesig = document.getElementById("btn-designation");
+    var btnDivision = document.getElementById("btn-division");
+    var btnOffice = document.getElementById("btn-designation");
+    var btnEducation = document.getElementById("btn-designation");
+    var btnBoard = document.getElementById("btn-designation");
+    var btnGroup = document.getElementById("btn-designation");
+    var btnAttach = document.getElementById("btn-designation");
+    var btnJoining = document.getElementById("btn-designation");
+    var btnClosing = document.getElementById("btn-designation");
+    var btnPerformance = document.getElementById("btn-designation");
+    btnDesig.addEventListener("click", function () {
+        window.location.href = "/Designation/Index";
+    })
+</script>

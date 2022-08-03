@@ -37,6 +37,7 @@ namespace TerrainHRM
             services.AddScoped<IApplicantRepository, ApplicantRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IDesigRepository, DesigRepository>();
+            services.AddScoped<IDivisionRepository, DivisionRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

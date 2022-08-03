@@ -31,6 +31,7 @@ namespace TerrainHRM.Data
         public virtual DbSet<ModelTypes> ModelTypes { get; set; }
         public virtual DbSet<CompanyOfficeAddress> CompanyOfficeAddress { get; set; }
         public virtual DbSet<DesigMst> DesigMsts { get; set; }
+        public virtual DbSet<DivisionMst> Divisions { get; set; }
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
@@ -197,6 +198,28 @@ namespace TerrainHRM.Data
                     .HasColumnName("COA_USE_TYPE_FLAG")
                     .HasMaxLength(2)
                     .IsUnicode(false);
+            });
+
+//            SELECT
+//   ROWID, DIVM_ID, DIVM_NAME, DIVM_CODE,
+//   DIVM_OPD_FLAG, DVIM_NAME_BN
+//FROM DU.DIVISION_MST
+
+            modelBuilder.Entity<DivisionMst>(entity =>
+            {
+                entity.HasKey(e => e.DivmId).HasName("DIVISION_MST_PK");
+                entity.ToTable("DIVISION_MST");
+                entity.Property(d => d.DivmId).HasColumnName("DIVM_ID");
+
+                entity.Property(d => d.DivmCode).HasColumnName("DIVM_CODE");
+
+                entity.Property(d => d.DivmName).HasColumnName("DIVM_NAME")
+                .HasMaxLength(200).IsUnicode(false);
+
+                entity.Property(d => d.DivmNameBn).HasColumnName("DVIM_NAME_BN")
+                .HasMaxLength(250);
+
+                entity.Property(d => d.DivmOpdFlag).HasColumnName("DIVM_OPD_FLAG");
             });
 
             /*SELECT 
