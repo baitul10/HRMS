@@ -32,6 +32,8 @@ namespace TerrainHRM.Data
         public virtual DbSet<CompanyOfficeAddress> CompanyOfficeAddress { get; set; }
         public virtual DbSet<DesigMst> DesigMsts { get; set; }
         public virtual DbSet<DivisionMst> Divisions { get; set; }
+        public virtual DbSet<DeptMst> Departments { get; set; }
+        public virtual DbSet<SectionMst> Sections { get; set; }
 
         //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //        {
@@ -222,11 +224,47 @@ namespace TerrainHRM.Data
                 entity.Property(d => d.DivmOpdFlag).HasColumnName("DIVM_OPD_FLAG");
             });
 
-            /*SELECT 
-       ROWID, DESIG_ID, DESIG_NAME, DESIG_PRIORITY, 
-       DESIG_ORDER, DESIG_PARENT_ID, DESIG_CLI_HRM_FLAG
-    FROM DU.DESIG_MST
-            */
+            modelBuilder.Entity<DeptMst>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.ToTable("DEPT_MST");
+                entity.Property(d => d.Id).HasColumnName("DEPT_ID");
+
+                entity.Property(d => d.DeptName).HasColumnName("DEPT_NAME")
+                .HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(d => d.DeptDivmId).HasColumnName("DEPT_DIVM_ID");
+                entity.Property(d => d.DeptType).HasColumnName("DEPT_TYPE");
+                entity.Property(d => d.DeptOrder).HasColumnName("DEPT_ORDER");
+                entity.Property(d => d.DeptCliHrmFlag).HasColumnName("DEPT_CLI_HRM_FLAG");
+                entity.Property(d => d.DeptCode).HasColumnName("DEPT_CODE");
+                entity.Property(d => d.DeptNameBn).HasColumnName("DEPT_NAME_BN").HasMaxLength(100).IsUnicode(false);
+                entity.Property(d => d.DeptTdlId).HasColumnName("DEPT_TDL_ID");
+            });
+
+
+
+
+            modelBuilder.Entity<SectionMst>(entity =>
+            {
+                entity.HasKey(e => e.Id).HasName("SECTION_MST_PK");
+                entity.ToTable("SECTION_MST");
+                entity.Property(d => d.Id).HasColumnName("SECT_ID");
+
+                entity.Property(d => d.SectName).HasColumnName("SECT_NAME")
+                .HasMaxLength(100).IsUnicode(false);
+
+                entity.Property(d => d.SectType).HasColumnName("SECT_TYPE");
+                entity.Property(d => d.SectDeptId).HasColumnName("SECT_DEPT_ID");
+                entity.Property(d => d.SectOrder).HasColumnName("SECT_ORDER");
+                entity.Property(d => d.SectNameBn).HasColumnName("SECT_NAME_BN").HasMaxLength(100).IsUnicode(false);
+                entity.Property(d => d.SectTdlId).HasColumnName("SECT_TDL_ID");
+            });
+
+
+            /*SECT_ID, SECT_NAME, SECT_TYPE, 
+   SECT_DEPT_ID, SECT_ORDER, SECT_NAME_BN, 
+   SECT_TDL_ID*/
 
             modelBuilder.Entity<DesigMst>(entity =>
             {

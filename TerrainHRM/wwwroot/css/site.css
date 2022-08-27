@@ -76,3 +76,9 @@ th{
     text-align:center;
     font-size:12px;
 }
+
+
+td{
+    margin:0px;
+    padding:0px;
+}

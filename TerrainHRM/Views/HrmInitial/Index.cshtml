@@ -220,9 +220,6 @@
         for (var i = 1; i < rowLength; i++) {
             var rowCells = rows[i].cells;
             var cellLength = rows[i].cells.length;
-            //var cimTag = 'CompanyDtlList_' + i + '__CimName';
-            //var cimName = rowCells.getElementById(cimTag).value;
-            //console.log(rowCells);
 
             var isvalid = true;
             var companyRow = {};
@@ -244,10 +241,6 @@
                 desigList.push(companyRow);
             }
         }
-
-       // jsonString = JSON.stringify(desigList);
-
-
         return desigList;
 
     }
