@@ -1,0 +1,253 @@
+﻿@model TerrainHRM.DTOs.DivisionDto;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Divisions";
+}
+
+<h4>Divisions</h4>
+<hr />
+<input type="hidden" id="division-01" name="division_id" />
+<input type="hidden" id="department-01" name="department_id" />
+<div id="division" style="height:200px!important;overflow-y:scroll">
+    <table class="table table-bordered table-sm mx-auto">
+        <thead class="thead-dark">
+            <tr>
+                <th>Short Name</th>
+                <th>Name</th>
+                <th>Name Bangla</th>
+                <th>
+                    <input style="padding:5px;" type="button" class="btn btn-primary" id="btn-division" value="Add" />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (int i = 0; i < Model.Division.Count; i++)
+            {
+                <tr>
+                    <td hidden>
+                        <input asp-for="@Model.Division[i].DivmId" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="@Model.Division[i].DivmCode" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="@Model.Division[i].DivmName" class="form-control" />
+                    </td>
+                    <td>
+                        <input asp-for="@Model.Division[i].DivmNameBn" class="form-control" />
+                    </td>
+                    <td class="text-center">
+                        <input style="color:white;" type="button" class="btn btn-danger" value="X" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+
+<br />
+<div class="row">
+    <div id="department" class="col-md-6" style="height:300px!important;overflow-y:scroll">
+        <table class="table table-bordered table-sm mx-auto">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order</th>
+                    <th>Name</th>
+                    <th>Name Bangla</th>
+                    <th>
+                        <input style="padding:5px;" type="button" class="btn btn-primary" id="btn-department" value="Add" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @for (int i = 0; i < Model.Departments.Count; i++)
+                {
+                    <tr>
+                        <td hidden>
+                            <input asp-for="@Model.Departments[i].Id" hidden class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Departments[i].DeptOrder" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Departments[i].DeptName" class="form-control" />
+                        </td>
+                        <td>
+                            <input asp-for="@Model.Departments[i].DeptNameBn" class="form-control" />
+                        </td>
+                        <td>
+                            <input style="color:white;" type="button" class="btn btn-danger" value="X" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    <div>
+        <input id="div-btn-submit" type="button" class="btn btn-success" value="submit" />
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+
+
+$(document).ready(function () {
+    $("#div-btn-submit").click(function () {
+        var divisionData = GetDivisionObj();
+        var deparmentsData = GetDepartmentObj();
+        console.log(divisionData);
+        console.log(deparmentsData);
+        if (confirm("Do you want to save the data?")) {
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("CreateDivisionDept", "HrmInitial")',
+                data: { "division": divisionData, "departments": deparmentsData },
+                success: function (res) {
+                    console.log(res);
+                    window.location.href = "/HrmInitial/DivIndex";
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+            console.log("alert success.")
+        }
+    });
+});
+
+
+
+    const btnSubmit = document.getElementById('div-btn-submit');
+
+    function GetDivisionObj() {
+        var division = document.getElementById("division");
+        var table = division.getElementsByClassName("table")[0];
+        var divRowCells = table.rows[1].cells;
+
+        var cellLength = divRowCells.length;
+        var isvalid = true;
+        var divisionRow = {};
+        for (var j = 0; j < cellLength - 1; j++) {
+            var inputValue = divRowCells[j].getElementsByTagName("input")[0].value;
+            //console.log(inputValue);
+            var inputAttr = divRowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+            //console.log(inputAttr);
+
+            if (j == 1 && checkEmpty(inputValue)) {
+                isvalid = false;
+            }
+
+            var fieldName = inputAttr.substring(inputAttr.indexOf('.') + 1);
+            divisionRow[fieldName] = inputValue;
+        }
+
+        if (isvalid) {
+            return divisionRow;
+        } else {
+            divisionRow = {};
+            return divisionRow;
+        }
+
+    }
+
+
+    function GetDepartmentObj() {
+        var departmentDiv =  document.getElementById("department");
+        var divisionList = [];
+        var table = departmentDiv.getElementsByClassName("table")[0];
+        var rows = table.rows;
+        //var rowLength = rows.length;
+
+        for (var i = 1; i < rows.length; i++) {
+            var rowCells = rows[i].cells;
+            //var cellLength = rows[i].cells.length;
+
+            var isvalid = true;
+            var departmentRow = {};
+            for (var j = 0; j < rowCells.length - 1; j++) {
+                var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
+                //console.log(inputValue);
+                var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+                //console.log(inputAttr);
+
+                if (j == 1 && checkEmpty(inputValue)) {
+                    isvalid = false;
+                }
+
+                var fieldName = inputAttr.substring(inputAttr.indexOf('.') + 1);
+                departmentRow[fieldName] = inputValue;
+            }
+
+            if (isvalid) {
+                divisionList.push(departmentRow);
+            }
+        }
+
+        return divisionList;
+
+    }
+
+
+
+</script>
+
+@*<script type="text/javascript">
+    const btnDivision = document.getElementById('btn-division');
+    const btnDepartment = document.getElementById('btn-department');
+    const btnSection = document.getElementById('btn-section');
+
+    btnDivision.addEventListener('click', function () {
+        addRowToTable('division');
+
+    });
+
+    btnDepartment.addEventListener('click', function () {
+        addRowToTable('department');
+    });
+
+    btnSection.addEventListener('click', function () {
+        addRowToTable('section');
+    });
+
+
+    function addRowToTable(pName) {
+        const divEl = document.getElementById(pName);
+        let elTable = divEl.getElementsByTagName('table')[0];
+        let elTableRows = elTable.rows;
+        let rowOuterHtml = elTableRows[elTableRows.length - 1].outerHTML;
+        let newRow = elTable.insertRow();
+        newRow.innerHTML = rowOuterHtml;
+        addNewRow(pName);
+    }
+
+
+
+    function addNewRow(pName) {
+        const targetedDiv = document.getElementById(pName);
+        let table = targetedDiv.getElementsByClassName("table")[0];
+        let rows = table.rows;
+        var lastRow = rows[rows.length - 1];
+        var tableTd = lastRow.getElementsByTagName("td");
+
+        //console.log(tableTd);
+        for (var i = 0; i < tableTd.length - 1; i++) {
+            var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+            if (i === 0) {
+                lastChildofTd.value = "0";
+            } else {
+                lastChildofTd.value = "";
+            }
+        }
+    }
+
+</script>*@
+
+
+<script src="~/js/hrmInitial.js" type="text/javascript"></script>

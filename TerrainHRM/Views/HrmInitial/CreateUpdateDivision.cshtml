@@ -1,0 +1,147 @@
+﻿@model TerrainHRM.DTOs.DivisionMstDto
+@{
+    ViewData["Title"] = "Division List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/division.css" rel="stylesheet" />
+
+<div class="row" style="padding-top:10px;">
+    <div class="col-6 text-left">
+        <h4>Create New Division</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a class="btn btn-primary" asp-action="CreateUpdateDivision" asp-controller="HrmInitial">Clear Page</a>
+    </div>
+</div>
+<hr />
+
+
+<div class="main-div">
+    <div class="division-div">
+        <div class="division-container">
+            <input type="hidden" name="DeptId" id="DeptId" value="" />
+            <form action="CreateUpdateDivision" method="post">
+                <div class="row">
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-3">
+                                    <input asp-for="Division.DivmId" hidden />
+                                <div class="form-group">
+                                    <label asp-for="Division.DivmCode"></label>
+                                    <input asp-for="Division.DivmCode" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-group">
+                                    <label asp-for="Division.DivmName"></label>
+                                    <input asp-for="Division.DivmName" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label asp-for="Division.DivmNameBn"></label>
+                                    <input asp-for="Division.DivmNameBn" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+
+                    </div>
+                    <div class="col-8 department-container" id="department-container">
+                        <fieldset>
+                            <legend style="color:black;font-weight:bold; font-size:14px;">Departments</legend>
+                        </fieldset>
+                        <div style="height:300px!important;overflow-y:scroll">
+
+                            <table class="table table-bordered table-sm mx-auto">
+                                <thead class="thead-dark sticky-top">
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Department Name</th>
+                                        <th>Department Name Bangla</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Departments.Count; i++)
+                                    {
+                                        <tr>
+                                            <td hidden>
+                                                <input asp-for="Departments[i].Id" hidden />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Departments[i].DeptOrder" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Departments[i].DeptName" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Departments[i].DeptNameBn" class="form-control" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group">
+                            <a class="btn btn-warning" asp-controller="HrmInitial" asp-action="Index">Cancel</a>
+                            <input style="float:right;" type="submit" value="Submit" class=" btn btn-success" />
+                            <input id="department-add" style="float:right; margin-right:10px;" type="button" class="btn btn-primary" value="Add" />
+                        </div>
+                    </div>
+                    <div class="col-2">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/hrmInitial.js"></script>
+<script type="text/javascript">
+    const addBtn = document.getElementById('department-add');
+
+    //function addRowToTable(pName) {
+    //    const divEl = document.getElementById(pName);
+    //    let elTable = divEl.getElementsByTagName('table')[0];
+    //    let elTableRows = elTable.rows;
+    //    var rowLenth = elTableRows.length;
+    //    let rowOuterHtml = elTableRows[elTableRows.length - 1].outerHTML;
+    //    rowOuterHtml = rowOuterHtml.replaceAll('_' + Number(rowLenth - 2) + '_', '_' + Number(rowLenth - 1) + '_');
+    //    rowOuterHtml = rowOuterHtml.replaceAll('[' + Number(rowLenth - 2) + '].', '[' + Number(rowLenth - 1) + '].');
+    //    let newRow = elTable.insertRow();
+    //    newRow.innerHTML = rowOuterHtml;
+    //    ClearCreatedRow(pName);
+    //}
+
+    //function ClearCreatedRow(pName) {
+    //    const targetedDiv = document.getElementById(pName);
+    //    let table = targetedDiv.getElementsByClassName("table")[0];
+    //    let rows = table.rows;
+    //    var lastRow = rows[rows.length - 1];
+    //    var tableTd = lastRow.getElementsByTagName("td");
+
+    //    for (var i = 0; i < tableTd.length - 1; i++) {
+    //        var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+    //        if (i === 0) {
+    //            lastChildofTd.value = "0";
+    //        } else {
+    //            lastChildofTd.value = "";
+    //        }
+    //    }
+    //}
+
+    addBtn.addEventListener('click', function () {
+        addRowToTable('department-container');
+    });
+
+</script>

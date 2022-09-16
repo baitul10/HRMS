@@ -1,0 +1,248 @@
+﻿@model IEnumerable<TerrainHRM.Models.DesigMst>
+
+@{
+    ViewData["Title"] = "Initial Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var modelDataCounter = 0;
+}
+
+<style>
+    #btn-designation{
+        background-color:black;
+        color:white;
+        font-weight:bold;
+        font-style:italic;
+    }
+
+    #designation-page{
+        position:relative;
+    }
+
+    input{
+        width:100%;
+        margin:0;
+        padding:0;
+    }
+</style>
+<div class="row">
+    <div id="designation-page" class="col-md-12">
+        <partial name="_MasterTabButtons" />
+    </div>
+</div>
+
+<br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <table class="table table-bordered col-md-8 table-sm" id="dsg-table-01">
+            <thead class="bg-primary">
+                <tr>
+                    <th class="text-center text-light">Designation</th>
+                    <th class="text-center text-light">Band</th>
+                    <th style="text-align:center; color:white; width:30px;">#</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ 
+                    modelDataCounter = Model.Count();
+                }
+                @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none;">@Html.EditorFor(x=>item.DesigId)</td>
+                            <td>@Html.EditorFor(x=>item.DesigName, new { Attribute = new { @class = "form-control" } })</td>
+                            <td style="text-align:center; width:120px;">@Html.EditorFor(x=> item.DesigPriority, new { Attribute = new { @class = "form-control"} })</td>
+                            <td style="text-align:center; color:red; width:30px;"><a href="#" id="dsg-delete-btn"><i class="fas fa-times-circle" style="color:red;"></i></a></td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+        <div class="col-md-8 table-sm text-md-right">
+            <button id="dsg-btn-add" style="background: #0275d8; color:white; font:14px bold; border:solid 2px blue;">Add</button>
+            <button id="dsg-btn-submit" style="background: #5cb85c; color:white; font:14px bold; border:solid 2px #5cb85c;">Submit</button>
+        </div>
+    </div>    
+</div>
+
+
+<script type="text/javascript">
+
+    var addBtn = document.getElementById('dsg-btn-add');
+    var submitBtn = document.getElementById('dsg-btn-submit');
+
+    addBtn.addEventListener('click', function () {
+        console.log('add btn clicked.');
+        addItem();
+    });
+
+    submitBtn.addEventListener('click', function () {
+        var sendData = GetDesigObj();
+        console.log(sendData);
+        var reqUrl = '@Url.Action("CreateUpdateDesignation", "Designation")';
+        postData(reqUrl, {"desigs": sendData }, 'POST', '/Designation/Index');
+
+        //$.ajax({
+        //    type: 'post',
+        //    url: retUrl,
+        //    data: { "desigs": sendData},
+        //    success: function (res) {
+        //        //window.location.href = retUrl;
+        //        result = 1;
+        //        console.log(res);
+        //    },
+        //    error: function (err) {
+        //        console.log(err);
+        //        result = 0;
+        //    }
+        //});
+    });
+
+    function addItem() {
+        var table = document.getElementById("dsg-table-01");
+        var rows = table.getElementsByTagName("tr");
+        var rowCount = rows.length;
+        var rowOuterHtml = rows[rows.length - 1].outerHTML;
+        var newRow = table.insertRow();
+
+        newRow.innerHTML = rowOuterHtml;
+        addNewRow();
+
+    }
+
+
+    function getDataByFetchApi(getUrl = '', getData, reqType = 'GET') {
+        console.log(getData);
+        console.log(getUrl);
+        console.log(reqType);
+        fetch(getUrl, {
+            method: reqType,
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Accept": "application/json"
+            },
+            credentials: 'include',
+            body: getData//JSON.stringify(getData)
+        }).then((response) => response.json())
+            .then((data) => console.log(data));
+    }
+
+     // Example POST method implementation:
+    function postData(reqUrl = '', reqData = {}, reqType = 'POST', retUrl = '') {
+        const jsonString = JSON.stringify({ "desigs": reqData });
+        console.log("from add designation " + jsonString);
+
+        $.ajax({
+            type: reqType,
+            url: reqUrl,
+            data: reqData,
+            success: function (res) {
+                window.location.href = retUrl;
+                console.log(res);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+
+        // Default options are marked with *
+        //fetch(reqUrl, {
+        //    method: reqType,
+        //    //mode: 'cors',
+        //    //cache: 'no-cache',
+        //    headers: {
+        //        "Content-Type": "application/json",
+        //        "Access-Control-Allow-Origin": "*",
+        //    },
+        //    //redirect: 'follow',
+        //    //referrerPolicy: 'no-referrer',
+        //    body: jsonString
+        //}).then((response) => response.json())
+        //    .then((data) => console.log(data));
+    }
+
+
+        //let xhr = new XMLHttpRequest();
+
+        //xhr.open("POST", "/Designation/CreateUpdateDesignation");
+        //xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+        //xhr.onload = function () {
+        //    result = 1;
+        //}
+        //xhr.onreadystatechange = function () {
+        //    if (this.readyState === 4 && xhr.status === 200) {
+        //        var res = JSON.parse(this.response);
+        //        console.log(res);
+        //    }
+        //    else {
+        //        res = this.response;
+        //        console.log(res);
+        //    }
+        //};
+        //xhr.send(JSON.stringify(data));
+
+        //return result;
+   // }
+
+    function addNewRow() {
+        var table = document.getElementsByClassName("table");
+
+        var rows = table[0].rows;
+
+        var lastRow = rows[rows.length - 1];
+
+        var tableTd = lastRow.getElementsByTagName("td");
+
+        //console.log(tableTd);
+        for (var i = 0; i < tableTd.length - 1; i++) {
+            var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+            if (i === 0) {
+                lastChildofTd.value = "0";
+                console.log("first Child");
+            } else {
+                lastChildofTd.value = "";
+            }
+        }
+    }
+
+
+
+    function GetDesigObj() {
+        var desigList = [];
+        var jsonString = "";
+        var table = document.getElementsByClassName("table");
+        console.log(table);
+        var rows = table[0].rows;
+        var rowLength = rows.length;
+
+        for (var i = 1; i < rowLength; i++) {
+            var rowCells = rows[i].cells;
+            var cellLength = rows[i].cells.length;
+
+            var isvalid = true;
+            var companyRow = {};
+            for (var j = 0; j < cellLength - 1; j++) {
+                var inputValue = rowCells[j].getElementsByTagName("input")[0].value;
+                //console.log(inputValue);
+                var inputAttr = rowCells[j].getElementsByTagName("input")[0].getAttribute("name");
+                //console.log(inputAttr);
+
+                if (j == 1 && checkEmpty(inputValue)) {
+                    isvalid = false;
+                }
+
+                var fieldName = inputAttr.substring(inputAttr.indexOf('.') + 1);
+                companyRow[fieldName] = inputValue;
+            }
+
+            if (isvalid) {
+                desigList.push(companyRow);
+            }
+        }
+        return desigList;
+
+    }
+
+</script>

@@ -44,6 +44,22 @@ namespace TerrainHRM.Repository
             return divisionList;
         }
 
+        public DivisionMst CreateDivision(DivisionMst division)
+        {
+
+            var maxDivmId = DbConnectionHelper.GetGeneratedPK("DIVISION_MST", "DIVM_ID") + 1;
+            division.DivmId = maxDivmId;
+            _context.Divisions.Add(division);
+            var result = _context.SaveChanges();
+            if (result>0)
+            {
+                return division;
+            }else
+            {
+                return new DivisionMst();
+            }
+        }
+
         public int DeleteDivision(int id)
         {
             var division = GetDivision(id);

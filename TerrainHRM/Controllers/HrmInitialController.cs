@@ -11,188 +11,119 @@ namespace TerrainHRM.Controllers
 {
     public class HrmInitialController : Controller
     {
-        private readonly IDesigRepository _desig;
-        private readonly IDivisionRepository _division;
+        private readonly IDivisionMstRepository _division;
         private readonly IDeptRepository _dept;
-        private readonly ISectRepository _sect;
-
-        public HrmInitialController(IDesigRepository desig, IDivisionRepository division, IDeptRepository dept, ISectRepository sect)
+        public HrmInitialController(IDivisionMstRepository division, IDeptRepository dept)
         {
-            _desig = desig;
             _division = division;
             _dept = dept;
-            _sect = sect;
         }
         public IActionResult Index()
         {
-            var desigList = _desig.GetDesigList();
-            return View(desigList);
+            var divisionList = _division.GetDivisionList();
+            return View("Division",divisionList);
+        }
+
+
+        [HttpGet]
+        public IActionResult CreateUpdateDivision(int id = 0)
+        {
+            var divDto = new DivisionMstDto();
+            if (id>0)
+            {
+                var div = _division.GetDivisionById(id);
+                divDto.Division = div;
+
+                var deptList = _dept.GetListEntity().Where(d => d.DeptDivmId == id)
+                    .OrderBy(x=>x.DeptOrder).ToList();
+                divDto.Departments.AddRange(deptList);
+            }
+            else
+            {
+                var div = new DivisionMst();
+                var dept = new DeptMst()
+                {
+                    Id = 0
+                };
+                divDto.Division = div;
+                divDto.Departments.Add(dept);
+            }
+
+            return View(divDto);
         }
 
         [HttpPost]
-        public IActionResult CreateUpdateDesignation(List<DesigMst> desigs)
+        public IActionResult CreateUpdateDivision(DivisionMstDto divisionMstDto)
         {
-            var desigList = _desig.CreateUpdateDesig(desigs);
-            return Ok(desigList);
-        }
 
-        [HttpPost]
-        public IActionResult DeleteDesignation(int id)
-        {
-            var result = _desig.DeleteDesig(id);
-            if (result<=0)
+            if (ModelState.IsValid)
             {
-                throw new Exception("Unauthorized error occurred!");
-            }
-            return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult DivisionIndex()
-        {
-            var divDeptSect = new DivisionDto();
-            try
-            {
-                var divisions = _division.GetDivisions().OrderBy(d => d.DivmId);
-
-                foreach (var div in divisions)
+                try
                 {
-                    divDeptSect.Division.Add(div);
-                }
-
-            }
-            catch (Exception e)
-            {
-                var error = new Errors();
-                error.ErrorMessage = e.Message;
-                error.ErrorEvent = "DivisionIndex Gettting Divisions";
-                error.ErrorStackTrace = e.StackTrace;
-                return RedirectToAction("Index", "AllErrors", error);
-            }
-
-            try
-            {
-                var departments = _dept.GetListEntity();
-                divDeptSect.Departments.AddRange(departments);
-            }
-            catch (Exception e)
-            {
-                var error = new Errors();
-                error.ErrorMessage = e.Message;
-                error.ErrorEvent = "DivisionIndex Gettting Departments";
-                error.ErrorStackTrace = e.StackTrace;
-                return RedirectToAction("Index", "AllErrors", error);
-            }
-
-            try
-            {
-                var sections = _sect.GetListEntity();
-                divDeptSect.Sections.AddRange(sections);
-            }
-            catch (Exception e)
-            {
-                var error = new Errors();
-                error.ErrorMessage = e.Message;
-                error.ErrorEvent = "DivisionIndex Gettting Sections";
-                error.ErrorStackTrace = e.StackTrace;
-                return RedirectToAction("Index", "AllErrors", error);
-            }
-
-            return View("DivisionView", divDeptSect);
-        }
-
-        public IActionResult CreateDivDeptSect(List<DivisionMst> divisions, List<DeptMst> departments, List<SectionMst> sections)
-        {
-            var divDeptSect = new DivisionDto();
-            try
-            {
-                var divisionList = _division.CreatUpdateDivision(divisions);
-                divDeptSect.Division = divisionList;
-                var deptListToInsert = new List<DeptMst>();
-                var deptListToUpdate = new List<DeptMst>();
-                var deptId = DbConnectionHelper.GetGeneratedPK("DEPT_MST", "DEPT_ID") + 1;
-                foreach (var department in departments)
-                {
-                    if (department.Id>0)
+                    var resutl = _division.CreateUpdateDivision(divisionMstDto.Division);
+                    if (resutl>0)
                     {
-                        deptListToUpdate.Add(department);
+                        var deptId = DbConnectionHelper.GetGeneratedPK("DEPT_MST", "DEPT_ID") + 1;
+                        var insertDeptList = new List<DeptMst>();
+                        var updateDeptList = new List<DeptMst>();
+                        foreach (var department in divisionMstDto.Departments)
+                        {
+                            if (department.Id == 0)
+                            {
+                                department.Id = deptId;
+                                department.DeptDivmId = resutl;
+                                ++deptId;
+                                insertDeptList.Add(department);
+                            }
+                            else
+                            {
+                                department.DeptDivmId = resutl;
+                                updateDeptList.Add(department);
+                            }
+                        }
+                        if (insertDeptList.Count>0)
+                        {
+                            _dept.CreatNewEntity(insertDeptList);
+                        }
+                        if (updateDeptList.Count>0)
+                        {
+                            _dept.UpdateEntity(updateDeptList);
+                        }
+                    }
+                    
+                    if (resutl>0)
+                    {
+                        return RedirectToAction("Index");
                     }
                     else
                     {
-                        department.Id = deptId;
-                        deptListToInsert.Add(department);
-                        ++deptId;
+                        var error = new Errors();
+                        error.ErrorMessage = "Data could not be inserted";
+                        error.ErrorEvent = "CreateUpdateDivision in HrmInitial";
+                        error.ErrorStackTrace = "";
+                        return RedirectToAction("Index", "AllErrors", error);
                     }
                 }
-                if (deptListToInsert.Count>0)
+                catch(Exception e)
                 {
-                    var insertedDepts = _dept.CreatNewEntity(deptListToInsert);
-                    divDeptSect.Departments.AddRange(insertedDepts);
-                }
-                if (deptListToUpdate.Count>0)
-                {
-                    var updatedDepts = _dept.UpdateEntity(deptListToUpdate);
-                    divDeptSect.Departments.AddRange(updatedDepts);
-                }
-
-                var sectListToInsert = new List<SectionMst>();
-                var sectListToUpdate = new List<SectionMst>();
-                var sectId = DbConnectionHelper.GetGeneratedPK("SECTION_MST", "SECT_ID") + 1;
-                foreach (var section in sections)
-                {
-                    if (section.Id > 0)
-                    {
-                        sectListToUpdate.Add(section);
-                    }
-                    else
-                    {
-                        section.Id = sectId;
-                        sectListToInsert.Add(section);
-                        ++sectId;
-                    }
-                }
-                if (sectListToInsert.Count > 0)
-                {
-                    var insertedSects = _sect.CreatNewEntity(sectListToInsert);
-                    divDeptSect.Sections.AddRange(insertedSects);
-                }
-                if (sectListToUpdate.Count > 0)
-                {
-                    var updatedSects = _sect.UpdateEntity(sectListToUpdate);
-                    divDeptSect.Sections.AddRange(updatedSects);
+                    var error = new Errors();
+                    error.ErrorMessage = e.Message;
+                    error.ErrorEvent = "CreateUpdateDivision in HrmInitial";
+                    error.ErrorStackTrace = e.StackTrace;
+                    error.ErrorInnerMessage = e.InnerException.Message;
+                    return RedirectToAction("Index", "AllErrors", error);
                 }
             }
-            catch(Exception e)
+            else
             {
                 var error = new Errors();
-                error.ErrorMessage = e.Message;
-                error.ErrorEvent = "CreateDivision";
-                error.ErrorStackTrace = e.StackTrace;
-                return RedirectToAction("Index", "AllErrors");
+                error.ErrorMessage = "Model State is not valid.";
+                error.ErrorEvent = "CreateUpdateDivision in HrmInitial";
+                error.ErrorStackTrace = "";
+                return RedirectToAction("Index", "AllErrors", error);
             }
-            return RedirectToAction("DivisionIndex", divDeptSect);
-        }
 
-        public IActionResult DeleteDivision(int id)
-        {
-            try
-            {
-                var deletedDivision = _division.DeleteDivision(id);
-                if (deletedDivision > 0)
-                {
-                    return RedirectToAction("DivisionIndex");
-                }
-            }
-            catch(Exception e)
-            {
-                var error = new Errors();
-                error.ErrorMessage = e.Message;
-                error.ErrorEvent = "CreateDivision";
-                error.ErrorStackTrace = e.StackTrace;
-                return RedirectToAction("Index", "AllErrors");
-            }
-            return RedirectToAction("DivisionIndex");
+            
         }
-
     }
-
 }

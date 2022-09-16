@@ -1,0 +1,43 @@
+﻿@model IEnumerable<TerrainHRM.Models.DivisionMst>
+@{
+    ViewData["Title"] = "Division List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row"  style="padding-top:10px;">
+    <div class="col-6 text-left">
+        <h4>Division List</h4>
+    </div>
+    <div class="col-6 text-right">
+        <a class="btn btn-primary" asp-controller="HrmInitial" asp-action="CreateUpdateDivision">Create Division</a>
+    </div>
+</div>
+<hr />
+@if (Model.Count() == 0)
+{
+    <p>No Data Found.</p>
+}
+else
+{
+    <table class="table table-bordered col-8 table-sm mx-auto">
+        <thead class="thead-dark">
+            <tr>
+                <th class="text-center">#</th>
+                <th class="text-center">Short Name</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Bangla Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var divm in Model)
+            {
+                <tr>
+                    <td class="text-center"><a asp-controller="HrmInitial" asp-action="CreateUpdateDivision" asp-route-id="@divm.DivmId"><i class="fas fa-edit"></i></a></td>
+                    <td class="text-center">@divm.DivmCode</td>
+                    <td class="text-center">@divm.DivmName</td>
+                    <td class="text-center">@divm.DivmNameBn</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
