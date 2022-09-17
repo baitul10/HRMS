@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TerrainHRM.Data;
 using TerrainHRM.Interfaces;
@@ -13,6 +14,22 @@ namespace TerrainHRM.Repository
             :base(context)
         {
             _context = context;
+        }
+
+        public List<DeptMst> DeptListByDivision(int divmId)
+        {
+            var deptList = _context.Departments
+                .Where(x => x.DeptDivmId == divmId)
+                .OrderBy(x => x.DeptOrder)
+                .ToList();
+            if (deptList.Count==0)
+            {
+                deptList.Add(new DeptMst
+                {
+                    Id = 0
+                });
+            }
+            return deptList;
         }
 
         //public DeptMst GetDept(int id)

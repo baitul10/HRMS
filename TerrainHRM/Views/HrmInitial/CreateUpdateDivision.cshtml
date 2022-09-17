@@ -53,14 +53,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">
-
-                    </div>
-                    <div class="col-8 department-container" id="department-container">
+                    <div class="col-6 department-container" id="department-container">
                         <fieldset>
                             <legend style="color:black;font-weight:bold; font-size:14px;">Departments</legend>
                         </fieldset>
-                        <div style="height:300px!important;overflow-y:scroll">
+                        <div style="height:350px!important;overflow-y:scroll">
 
                             <table class="table table-bordered table-sm mx-auto">
                                 <thead class="thead-dark sticky-top">
@@ -91,13 +88,50 @@
                                 </tbody>
                             </table>
                         </div>
+                        <input id="department-add" style="float:right; margin-right:10px;" type="button" class="btn btn-primary" value="Add" />
+                    </div>
+                    <div class="col-6 section-container" id="section-container">
+                        <fieldset>
+                            <legend style="color:black;font-weight:bold; font-size:14px;">Sections</legend>
+                        </fieldset>
+                        <div style="height:350px!important; overflow-y:scroll;">
+                            <table class="table table-bordered table-sm mx-auto">
+                                <thead class="thead-dark sticky-top">
+                                    <tr>
+                                        <th>Order</th>
+                                        <th>Section Name</th>
+                                        <th>Bangla Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int j = 0; j < Model.Sections.Count; j++)
+                                    {
+                                        <tr>
+                                            <td hidden>
+                                                <input hidden asp-for="Sections[j].Id" />
+                                            </td>
+                                            <td hidden>
+                                                <input hidden asp-for="Sections[j].SectDeptId" class="sect-dept-id" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Sections[j].SectOrder" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Sections[j].SectName" class="form-control" />
+                                            </td>
+                                            <td>
+                                                <input asp-for="Sections[j].SectNameBn" class="form-control" />
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="form-group">
                             <a class="btn btn-warning" asp-controller="HrmInitial" asp-action="Index">Cancel</a>
                             <input style="float:right;" type="submit" value="Submit" class=" btn btn-success" />
-                            <input id="department-add" style="float:right; margin-right:10px;" type="button" class="btn btn-primary" value="Add" />
+                            <input id="section-add" style="float:right; margin-right:10px;" type="button" class="btn btn-primary" value="Add" />
                         </div>
-                    </div>
-                    <div class="col-2">
                     </div>
                 </div>
             </form>
@@ -106,9 +140,86 @@
 </div>
 
 
-<script src="~/js/hrmInitial.js"></script>
+@*<script src="~/js/hrmInitial.js"></script>*@
 <script type="text/javascript">
     const addBtn = document.getElementById('department-add');
+    const addSectBtn = document.getElementById('section-add');
+
+
+    function addRowToTable(pName) {
+        const divEl = document.getElementById(pName);
+        let elTable = divEl.getElementsByTagName('table')[0];
+        let elTableRows = elTable.rows;
+        var rowLenth = elTableRows.length;
+        let rowOuterHtml = elTableRows[elTableRows.length - 1].outerHTML;
+        rowOuterHtml = rowOuterHtml.replaceAll('_' + Number(rowLenth - 2) + '_', '_' + Number(rowLenth - 1) + '_');
+        rowOuterHtml = rowOuterHtml.replaceAll('[' + Number(rowLenth - 2) + '].', '[' + Number(rowLenth - 1) + '].');
+        let newRow = elTable.insertRow();
+        newRow.innerHTML = rowOuterHtml;
+    }
+
+
+
+    function ClearCreatedRow(pName) {
+        const targetedDiv = document.getElementById(pName);
+        let table = targetedDiv.getElementsByClassName("table")[0];
+        let rows = table.rows;
+        var lastRow = rows[rows.length - 1];
+        var tableTd = lastRow.getElementsByTagName("td");
+        var tdLength = tableTd.length;
+
+        for (var i = 0; i < tableTd.length; i++) {
+            var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+            if (i === 0) {
+                lastChildofTd.value = "0";
+            } else {
+                lastChildofTd.value = "";
+            }
+        }
+    }
+
+    function populateSections(pData) {
+
+        const targetedDiv = document.getElementById('section-container');
+        let table = targetedDiv.getElementsByClassName("table")[0];
+        let rows = table.rows;
+
+        for (var j = 0; j < rows.length; j++) {
+            var currRow = rows[j];
+            
+            var tableTd = currRow.getElementsByTagName("td");
+
+            for (var i = 0; i < tableTd.length; i++) {
+                var lastChildofTd = tableTd[i].getElementsByTagName("input")[0];
+                lastChildofTd.value = pData[i];
+            }
+        }
+
+    }
+
+        //var sectionList;
+        //getSections(1).then(function (data) {
+        //    sectionList = data;
+        //    console.log(sectionList);
+        //});
+
+    function getSections(id) {
+        if (id) {
+           return $.ajax({
+                type: "GET",
+                url: "/HrmInitial/GetSections",
+                data: { deptId: id },
+                success: function (res) {
+                    //console.log(res);
+                   // var sectionList = res;
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            })
+        }
+    }
+
 
     //function addRowToTable(pName) {
     //    const divEl = document.getElementById(pName);
@@ -142,6 +253,12 @@
 
     addBtn.addEventListener('click', function () {
         addRowToTable('department-container');
+        ClearCreatedRow('department-container');
+    });
+
+    addSectBtn.addEventListener('click', function () {
+        addRowToTable('section-container');
+        ClearCreatedRow('section-container');
     });
 
 </script>
