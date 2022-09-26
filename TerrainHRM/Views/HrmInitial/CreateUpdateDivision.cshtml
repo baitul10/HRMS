@@ -31,7 +31,7 @@
                                     <input asp-for="Division.DivmId" hidden />
                                 <div class="form-group">
                                     <label asp-for="Division.DivmCode"></label>
-                                    <input asp-for="Division.DivmCode" class="form-control" />
+                                    <input style="width:150px!important;" asp-for="Division.DivmCode" class="form-control" />
                                 </div>
                             </div>
                             <div class="col-5">
@@ -75,7 +75,7 @@
                                                 <input asp-for="Departments[i].Id" hidden />
                                             </td>
                                             <td>
-                                                <input asp-for="Departments[i].DeptOrder" class="form-control" />
+                                                <input style="width:50px!important;" asp-for="Departments[i].DeptOrder" class="form-control" />
                                             </td>
                                             <td>
                                                 <input asp-for="Departments[i].DeptName" class="form-control" />
@@ -114,7 +114,7 @@
                                                 <input hidden asp-for="Sections[j].SectDeptId" class="sect-dept-id" />
                                             </td>
                                             <td>
-                                                <input asp-for="Sections[j].SectOrder" class="form-control" />
+                                                <input style="width:50px!important;" asp-for="Sections[j].SectOrder" class="form-control" />
                                             </td>
                                             <td>
                                                 <input asp-for="Sections[j].SectName" class="form-control" />
@@ -144,6 +144,24 @@
 <script type="text/javascript">
     const addBtn = document.getElementById('department-add');
     const addSectBtn = document.getElementById('section-add');
+
+
+    const deptTable = document.getElementById('department-container')
+        .getElementsByTagName('table')[0];
+
+    var deptRows = deptTable.rows;
+
+    for (let i = 0; i < deptRows.length; i++) {
+        deptRows[i].addEventListener('click', function () {
+            let deptTd = this.getElementsByTagName('td')[0];
+            let deptId = deptTd.getElementsByTagName('input')[0].value;
+            console.log(deptId);
+            let sectionData = getSections(deptId);
+            console.log(sectionData);
+        });
+    }
+
+    
 
 
     function addRowToTable(pName) {
@@ -219,7 +237,6 @@
             })
         }
     }
-
 
     //function addRowToTable(pName) {
     //    const divEl = document.getElementById(pName);
